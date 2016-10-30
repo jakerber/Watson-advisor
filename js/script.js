@@ -18,7 +18,7 @@ function get_text() {
 		document.getElementById("ask-him").style = 'margin-top:40px;';
 		document.getElementById("reveal").style.display = 'inline';
 		document.getElementById("results").style.display = 'block';
-		document.getElementById("adjustable-height").style = 'background-color: rgba(0,0,0,0.4);';
+		document.getElementById("adjustable-height").style = 'background-color: rgba(0,0,0,0.5);';
 
 		// liquidate elements
 		var max_liq = 2;
