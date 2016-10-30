@@ -1,5 +1,9 @@
 var page_load = false;
 
+window.onload = function(){
+	window.location = "http://www.cs.dartmouth.edu/~jkerber14/watson/?#";
+}
+
 function rec_audio() {
 	alert('Coming soon!');
 }
