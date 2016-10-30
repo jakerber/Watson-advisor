@@ -1,2 +1,6 @@
 # Watson-advisor
-IBM's Watson as a financial advisor.
+Using the cognitive computing power of IBM's Watson to build a financial advisor.
+
+Web application built for COSC89.11
+
+##### Anish Chadalavada, Rajiv Ramaiah, & Josh Kerber
