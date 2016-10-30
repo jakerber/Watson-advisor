@@ -1,0 +1,293 @@
+/*=========================================
+*             FULL PAGE STYLES
+*=========================================*/
+
+html, body {
+min-height: 100%;
+overflow: hidden;
+}
+
+html {
+background-image: url("../images/finance.png");
+background-color: rgba(1, 1, 1, 0.5);
+background-size: cover;
+background-attachment: fixed;
+}
+
+/*=========================================
+*               NAV BAR
+*=========================================*/
+
+#nav_bar {
+background-color: rgba(255,255,255,0.95);
+font-family: 'Montserrat';
+font-weight: bold;
+font-size: 20px;
+list-style-type: none;
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+margin: 0;
+padding: 0;
+overflow: hidden;
+z-index: 1000;
+}
+
+.nav_item {
+float: left;
+}
+
+.nav_item img {
+width: 40px;
+height: 40px;
+}
+
+.nav_item a {
+display: block;
+color: rgba(0,0,0,0.4);
+text-align: center;
+padding: 10px 5px 13px 0px;
+text-decoration: none;
+}
+
+#first_item {
+padding-left: 50px;
+}
+
+#first_item a {
+margin-top: 0px;
+}
+
+#title {
+padding-left: 10px;
+margin-top: 10px;
+}
+
+.nav_item a:hover {
+transition-property: all;
+transition-duration: .7s;
+transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+color: rgba(1, 1, 1, 0.6);
+}
+
+/*=========================================
+*               SITE BODY
+*=========================================*/
+
+.transparent {
+position: fixed;
+top: -40px;
+left: 0;
+width: 100%;
+height: 150%;
+background-color: rgba(1, 1, 1, 0.4);
+}
+
+.overlay {
+height: 380px;
+width: 900px;
+background-color: rgba(0,0,0,0.2);
+left: 0; right: 0; top: 20%;
+margin-right: auto; margin-left: auto;
+border-radius: 15px;
+position: fixed;
+text-align: center;
+font-family: sans-serif;
+padding-bottom: 10px;
+overflow: scroll;
+}
+
+.overlay h1 {
+font-family: 'Montserrat';
+font-weight: bold;
+font-size: 65px;
+margin-top: 20px;
+margin-bottom: 10px;
+color: white;
+padding-top: 26px;
+}
+
+.overlay h2 {
+font-family: 'Montserrat';
+margin-top: 0px;
+margin-bottom: 0px;
+font-size: 35px;
+color: white;
+}
+
+/*=========================================
+*             ASK WATSON
+*=========================================*/
+
+#ask-him {
+background-color: white;
+font-family: sans-serif;
+font-weight: 100;
+font-size: 14px;
+border-radius: 4px;
+border: 2px solid white;
+margin: 30px auto;
+margin-top: 20px;
+margin-bottom: 15px;
+width: 800px;
+height: 50px;
+}
+
+#ask-him input {
+padding-left: 20px;
+font-size: 20px;
+font-family: 'helvetica neue';
+font-weight: 200;
+height: 50px;
+width: 800px;
+margin-bottom: 15px;
+}
+
+button.fill-div:hover {
+cursor: pointer;
+transition-property: all;
+transition-duration: 2s;
+transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+background: rgba(255, 255, 255, 0.15);
+}
+
+button.fill-div {
+background-color: rgba(0,0,0,0);
+display: block;
+height: 52px;
+width: 100px;
+padding: 12px 0px 10px 0px;
+color: white;
+text-decoration: none;
+border: 1px solid white;
+border-radius: 3px;
+margin-left: auto;
+margin-right: auto;
+margin-top: 14px;
+margin-bottom: 80px;
+font-size: 25px;
+}
+
+/*=========================================
+*            WATSON's RESULTS
+*=========================================*/
+
+#results {
+-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+box-sizing: border-box;         /* Opera/IE 8+ */
+border-radius: 5px;
+width: 800px;
+color: black;
+margin-bottom: 10px;
+padding: 0px; padding-right: 0px; padding-top: 0px;
+display: none;
+}
+
+#results h4 {
+font-family: 'helvetica neue';
+font-weight: 100;
+font-size: 22px;
+color: white;
+}
+
+#reveal {
+padding-top: 10px;
+padding-bottom: 40px;
+height: 100px;
+width: 100px;
+display: none;
+}
+
+/*=========================================
+*             PAGE FOOTER
+*=========================================*/
+
+.footer {
+text-align: center;
+font-family: 'helvetica neue';
+font-weight: 200;
+font-size: 15px;
+position: fixed;
+bottom: 0;
+right: 0;
+left: 0;
+background-color: rgba(255,255,255,0.95);
+border: 2px solid white;
+}
+
+.footer a {
+text-decoration: none;
+color: rgba(0,0,0,0.65)
+}
+
+/*=========================================
+*             FADE IN EFFECT
+*=========================================*/
+
+h1, h2, p, a, div {
+-webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
+-moz-animation: fadein 1s; /* firefox */
+animation: fadein 1s;
+}
+
+/*=========================================
+*             MOBILE VIEW
+*=========================================*/
+
+@media screen and (max-device-width: 480px){
+.nav_item img {
+width: 80px;
+height: 80px;
+}
+.footer {
+font-size: 30px;
+}
+.transparent {
+overflow: hidden;
+} 
+/*==========================
+*      TALLER OVERLAY
+*===========================*/
+.overlay {
+height: 700px;
+}
+.overlay h2 {
+padding-left: 5px;
+padding-right: 5px;
+font-size: 50px;
+font-family: 'Futura';
+}
+.overlay h1 {
+padding-top: 100px;
+font-size: 100px;
+font-weight: 500;
+}
+button.fill-div {
+border: 2px solid white;
+height: 75px;
+width: 150px;
+}
+button.fill-div i {
+font-size: 42px;
+}
+#ask-him {
+height: 70px;
+}
+/*==========================
+*      BIGGER FONTS
+*===========================*/
+#ask-him input {
+margin-bottom: 20px;
+font-size: 32px;
+height: 70px;
+}
+#results h4 {
+font-size: 50px;
+}
+#reveal {
+height: 150px;
+width: 150px;
+}
+}

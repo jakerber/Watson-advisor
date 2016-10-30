@@ -1,0 +1,115 @@
+<html>
+	<head>
+
+    <!-- favicons -->
+
+    <link rel="apple-touch-icon" sizes="57x57" href="favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- link css/js/fonts/icons -->
+
+		<link type="text/css" rel="stylesheet" href="./css/main.css"/>
+		<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script type="text/javascript" src="js/script.js"></script>
+
+    <!-- custom attributes -->
+
+    <title>Financial Advisor Watson</title>
+		<meta name="description" content="IBM\'s Watson as a Financial Advisor">
+		<meta name="keywords" content="HTML,CSS,javascript,ibm,watson,cognitive,computing,dartmouth,college,software,design,engineering,student,computer,science,palmer,is,a,boss">
+		<meta name="author" content="Joshua Kerber">
+    
+	</head>
+	<body>
+
+  <!-- full page wrapper -->
+
+	<div class="transparent">
+
+    <!-- header -->
+
+		<ul id="nav_bar">
+
+      <!-- watson logo/link -->
+
+      <li class="nav_item" id="first_item">
+        <a href="http://www.ibm.com/watson/">
+          <img src="https://userscontent2.emaze.com/images/4f9d2213-5291-4b6b-8e97-5e46496d9a2f/5d9d2981-cb74-4079-9c90-587f4b56dfa5image10.png"></img>
+        </a>
+      </li>
+
+      <!-- ibm logo/link -->
+
+      <li class="nav_item" style="float:right;padding-right:50px;">
+        <a href="http://www.ibm.com/">
+          <img src="images/ibm.png"></img>
+        </a>
+      </li>
+
+		</ul>
+
+    <!-- translucent overlay mid-screen -->
+
+		<div id="adjustable-height" class="overlay">
+
+      <!-- headers -->
+
+			<h1 id="liquidate-1">IBM's WATSON</h1>
+			<h2 id="liquidate-2">as your very own financial advisor</h2>
+
+      <!-- ask watson -->
+
+			<div id="ask-him">
+
+        <!-- enter text -->
+
+        <form id="ask-form" onSubmit="get_text();" action="#">
+    		    <input id="text-input" type="text" placeholder="Ask him anything..."></input>
+        </form>
+
+        <!-- audio input -->
+
+        <button id="liquidate-3" onclick="rec_audio()" class="fill-div"><i class="material-icons">mic</i></button>
+
+        <!-- display results -->
+
+        <div id="results">
+          <h4 id="text-display"></h4>
+        </div>
+        <img id="reveal" src="https://userscontent2.emaze.com/images/4f9d2213-5291-4b6b-8e97-5e46496d9a2f/5d9d2981-cb74-4079-9c90-587f4b56dfa5image10.png"></img>
+
+			</div>
+
+		</div>
+
+    <!-- sticky footer -->
+
+    <div class="footer">
+
+      <!-- display copyright -->
+
+      <p><a href="https://www.linkedin.com/in/anish-chadalavada-04236694" target="_blank">&#169; 2016 Seggy Design Studios Inc.</a></p>
+
+    </div>
+
+	</div>
+	</body>
+</html>
