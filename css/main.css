@@ -157,7 +157,7 @@ background-color: rgba(0,0,0,0);
 display: block;
 height: 52px;
 width: 100px;
-padding: 12px 0px 10px 0px;
+padding: 10px 0px 10px 0px;
 color: white;
 text-decoration: none;
 border: 1px solid white;
@@ -190,6 +190,7 @@ font-family: 'helvetica neue';
 font-weight: 100;
 font-size: 22px;
 color: white;
+opacity: 1;
 }
 
 #reveal {
@@ -224,9 +225,11 @@ color: rgba(0,0,0,0.5);
 .footer a:hover {
 transition-property: all;
 transition-duration: 1s;
-padding-bottom: 2px;
-border-bottom: 1px solid #0BB5FF;
-color: black;
+padding: 15px;
+padding-left: 30px;
+padding-right: 30px;
+background-color: rgba(11, 181, 255, 0.15);
+color: rgba(0,0,0,0.65);
 }
 
 /*=========================================

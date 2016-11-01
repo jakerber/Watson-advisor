@@ -11,11 +11,13 @@ function rec_audio() {
 function get_text() {
 	// change displays
 	document.getElementById("text-input").value = '';
-	document.getElementById("text-input").placeholder = 'Ask something new...';
+	document.getElementById("text-input").placeholder = 'Enter a new stock symbol...';
 
 	if (page_load == false) {
 		// first request
 		document.getElementById("ask-him").style = 'margin-top:40px;';
+		// document.getElementById("adjustable-height").style.height = '62%';
+		$('#adjustable-height').animate({height:'60%'});
 		document.getElementById("reveal").style.display = 'inline';
 		document.getElementById("results").style.display = 'block';
 		document.getElementById("adjustable-height").style = 'background-color: rgba(0,0,0,0.5);';
@@ -30,7 +32,7 @@ function get_text() {
 	page_load = true;
 
 	///////////// RETRIEVE RESPONSE FROM WATSON HERE
-	watson_text = 'Hi there! Thanks for using our service. Unfortunately, we don\'t have it up and running yet. Check back soon. - Team Seggy';
+	var watson_text = 'Hi there! Thanks for using our service. Unfortunately, we don\'t have it up and running yet. Check back soon. - Team Seggy';
 	////////////
 
 	document.getElementById("text-display").innerHTML = watson_text;
