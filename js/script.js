@@ -1,14 +1,41 @@
 var page_load = false;
 
 window.onload = function(){
-	window.location = "http://www.cs.dartmouth.edu/~jkerber14/watson/?#";
+	window.location = "http://www.cs.dartmouth.edu/~jkerber14/watson/?inputbox=#";
 }
 
 function rec_audio() {
 	alert('Coming soon!');
 }
 
-function get_text() {
+function set_header(symbol) {
+	var callback = function(data) {
+        var price = data.query.results.quote.LastTradePriceOnly;
+        var name = data.query.results.quote.Name;
+        var info_header = '';
+        if (price == null) {
+			info_header = 'Stock symbol ' + symbol + ' not found. A full list of stock symbols can be found on the web at http://eoddata.com/symbols.aspx';
+		} else {
+			info_header = name + ' — last trade price: $' + price;
+		}
+		document.getElementById("text-display-header").innerHTML = info_header;
+    };
+
+	var url = 'http://query.yahooapis.com/v1/public/yql';
+	// this is the lovely YQL query (html encoded) which lets us get the stock price:
+	// select * from html where url="http://finance.yahoo.com/q?s=goog" and xpath='//span[@id="yfs_l10_goog"]'
+	var data = 'q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22' + symbol + '%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=';
+	$.getJSON(url, data, callback);
+}
+
+/* IMPORTANT:
+** - user's input is stored in the variable 'user_input'
+** - once you get a response from watson, store the text that you want to display in the variable 'watson_text'
+** - stock name and price info will be display in a header by way of function 'set_header' above
+*/
+function get_text(form) {
+	// get text from user
+	var user_input = form.inputbox.value
 	// change displays
 	document.getElementById("text-input").value = '';
 	document.getElementById("text-input").placeholder = 'Enter a new stock symbol...';
@@ -31,6 +58,9 @@ function get_text() {
 	}
 	page_load = true;
 
+	// set header with data
+	set_header(user_input);
+
 	///////////// RETRIEVE RESPONSE FROM WATSON HERE
 	var watson_text = 'Hi there! Thanks for using our service. Unfortunately, we don\'t have it up and running yet. Check back soon. - Team Seggy';
 	////////////
@@ -39,13 +69,6 @@ function get_text() {
 
 	//scroll to bottom of div
 	$("#adjustable-height").animate({ scrollTop: $('#adjustable-height').prop("scrollHeight")}, 1000);
-
-	//deselection
-	// if (document.selection) {
- //        document.selection.empty();
- //    } else if ( window.getSelection ) {
- //        window.getSelection().removeAllRanges();
- //    }
 
 	return false;
 }
