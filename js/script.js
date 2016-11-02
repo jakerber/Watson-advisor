@@ -10,13 +10,18 @@ function rec_audio() {
 
 function set_header(symbol) {
 	var callback = function(data) {
-        var price = data.query.results.quote.LastTradePriceOnly;
+        var price = data.query.results.quote.Ask;
         var name = data.query.results.quote.Name;
+        var change = data.query.results.quote.PercentChange;
         var info_header = '';
-        if (price == null) {
+        if (price == null || price == undefined) {
 			info_header = 'Stock symbol ' + symbol + ' not found. A full list of stock symbols can be online at http://eoddata.com/symbols.aspx';
 		} else {
-			info_header = name + ' — last trade price: $' + price;
+			if (change == null) {
+				info_header = name + ' — $' + price;
+			} else {
+				info_header = name + ' — $' + price + ' (' + change + ')';
+			}
 		}
 		document.getElementById("text-display-header").innerHTML = info_header;
     };
@@ -35,8 +40,8 @@ function set_header(symbol) {
 */
 function get_text(form) {
 	// get text from user, display stock symbol
-	var user_input = form.inputbox.value
-	document.getElementById("stock-sym-display").innerHTML = user_input;
+	var user_input = form.inputbox.value;
+	document.getElementById("stock-sym-display").innerHTML = user_input.toUpperCase();
 	document.getElementById("text-display").innerHTML = 'Loading...';
 	document.getElementById("text-display-header").innerHTML = 'Loading...';
 	// change displays
