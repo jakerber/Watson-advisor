@@ -14,7 +14,7 @@ function set_header(symbol) {
         var name = data.query.results.quote.Name;
         var info_header = '';
         if (price == null) {
-			info_header = 'Stock symbol ' + symbol + ' not found. A full list of stock symbols can be found on the web at http://eoddata.com/symbols.aspx';
+			info_header = 'Stock symbol ' + symbol + ' not found. A full list of stock symbols can be online at http://eoddata.com/symbols.aspx';
 		} else {
 			info_header = name + ' — last trade price: $' + price;
 		}
@@ -34,8 +34,11 @@ function set_header(symbol) {
 ** - stock name and price info will be display in a header by way of function 'set_header' above
 */
 function get_text(form) {
-	// get text from user
+	// get text from user, display stock symbol
 	var user_input = form.inputbox.value
+	document.getElementById("stock-sym-display").innerHTML = user_input;
+	document.getElementById("text-display").innerHTML = 'Loading...';
+	document.getElementById("text-display-header").innerHTML = 'Loading...';
 	// change displays
 	document.getElementById("text-input").value = '';
 	document.getElementById("text-input").placeholder = 'Enter a new stock symbol...';
