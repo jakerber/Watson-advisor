@@ -112,7 +112,8 @@ function get_text(form) {
 	set_header(user_input);
 
 	///////////// RETRIEVE RESPONSE FROM WATSON HERE
-	var watson_text = 'Hi there! Thanks for using our service. Unfortunately, we don\'t have it up and running yet. Check back soon. - Team Seggy';
+	//var watson_text = 'Hi there! Thanks for using our service. Unfortunately, we don\'t have it up and running yet. Check back soon. - Team Seggy';
+	var watson_text = 'Hi there! Thanks for using our service. Check back soon for more updates. - Team Seggy';
 	////////////
 
 	document.getElementById("text-display").innerHTML = watson_text;
