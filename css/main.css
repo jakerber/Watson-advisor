@@ -9,10 +9,11 @@ margin: 0px;
 }
 
 html {
-background-image: url("../images/finance.png");
 background-color: rgba(1, 1, 1, 0.5);
-background-size: cover;
-background-attachment: fixed;
+}
+
+#body-all {
+overflow: hidden;
 }
 
 /*=========================================
@@ -28,10 +29,11 @@ list-style-type: none;
 top: 0;
 left: 0;
 width: 100%;
-margin: 0;
+margin: 0px;
+margin-bottom: 7.5%;
 padding: 0;
 overflow: hidden;
-z-index: 1000;
+z-index: 9999;
 text-align: center;
 }
 
@@ -85,13 +87,15 @@ color: rgba(1, 1, 1, 0.6);
 *=========================================*/
 
 .transparent {
+background-image: url("../images/finance.png");
+background-size: cover;
 padding: 0px;
 margin: 0px;
 top: 0px;
 left: 0;
 width: 100%;
 min-height: 100%;
-background-color: rgba(1, 1, 1, 0.4);
+background-color: rgba(0,0,0,1);
 overflow: scroll;
 }
 
@@ -99,8 +103,8 @@ overflow: scroll;
 min-height: 380px;
 width: 900px;
 background-color: rgba(0,0,0,0.85);
-left: 0; right: 0; top: 20%;
-margin-right: auto; margin-left: auto; margin-top: 150px;
+left: 0; right: 0;
+margin-right: auto; margin-left: auto; margin-top: 50px;
 border-radius: 15px;
 text-align: center;
 font-family: sans-serif;
@@ -172,7 +176,7 @@ border-radius: 3px;
 margin-left: auto;
 margin-right: auto;
 margin-top: 14px;
-margin-bottom: 80px;
+margin-bottom: 50px;
 font-size: 25px;
 }
 
@@ -190,6 +194,15 @@ transform: translate(-50%, -50%);
 border-radius: 10px;
 }
 
+#loading-back {
+	top: 0;
+position: fixed;
+height: 100%;
+width: 100%;
+background-color: rgba(0,0,0,0.8);
+display: none;
+}
+
 /*=========================================
 *            WATSON's RESULTS
 *=========================================*/
@@ -204,12 +217,12 @@ color: black;
 margin-bottom: 10px;
 padding: 0px; padding-right: 0px; padding-top: 0px;
 display: none;
+font-family: 'Montserrat', 'helvetica neue';
+font-size: 22px;
 }
 
 #results h4 {
-font-family: 'helvetica neue';
 font-weight: 100;
-font-size: 22px;
 color: white;
 opacity: 1;
 }
@@ -218,9 +231,13 @@ opacity: 1;
 color: white;
 }
 
+.results-top {
+	font-size: 25px;
+}
+
 #reveal {
 padding-top: 10px;
-padding-bottom: 40px;
+padding-bottom: 70px;
 height: 100px;
 width: 100px;
 display: none;
@@ -231,20 +248,21 @@ display: none;
 *=========================================*/
 
 .footer {
+position: fixed;
 text-align: center;
-font-family: 'helvetica neue';
-font-weight: 200;
-font-size: 15px;
-padding: 3px;
+font-family: 'Bungee Hairline', 'helvetica neue';
+font-size: 20px;
+line-height: 10px;
+color: black;
 bottom: 0;
 right: 0;
 left: 0;
 background-color: rgba(255,255,255,0.95);
+padding: 2px;
 }
 
 .footer a {
 text-decoration: none;
-color: rgba(0,0,0,0.5);
 }
 
 /*=========================================
@@ -269,14 +287,14 @@ height: 80px;
 .footer {
 font-size: 30px;
 }
-.transparent {
-overflow: hidden;
-} 
+#nav_bar {
+margin-bottom: 20%;
+}
 /*==========================
 *      TALLER OVERLAY
 *===========================*/
 .overlay {
-height: 700px;
+min-height: 700px;
 }
 .overlay h2 {
 padding-left: 5px;
@@ -298,7 +316,7 @@ button.fill-div i {
 font-size: 42px;
 }
 #ask-him {
-height: 70px;
+min-height: 70px;
 }
 #loading-wheel {
 height: 350px;
@@ -310,9 +328,11 @@ height: 350px;
 padding-top: 28px;
 }
 #ask-him input {
+font-family: 'Montserrat';
 margin-bottom: 20px;
 font-size: 32px;
 height: 70px;
+font-weight: 100;
 }
 #results h4 {
 font-size: 50px;
@@ -320,10 +340,5 @@ font-size: 50px;
 #reveal {
 height: 175px;
 width: 175px;
-}
-}
-@media screen and (max-device-width: 280px){
-#nav_bar span {
-display: none;
 }
 }

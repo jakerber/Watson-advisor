@@ -95,17 +95,28 @@ function set_header(symbol) {
 ** - stock name and price info will be display in a header by way of function 'set_header' above
 */
 function get_text(form) {
+	// page is loading
 	document.getElementById("adjustable-height").style.display = 'none';
 	document.getElementById("loading-wheel").style.display = 'block';
-	document.getElementById("full-page").style = 'background-color: rgba(0,0,0,0.8);';
+	document.getElementById("loading-back").style.display = 'block';
+	document.getElementById("nav_bar").style.display = 'none';
+	document.getElementById("foot").style.display = 'none';
 	// set timer
-	var timer = Math.floor(Math.random() * ((8000-2000)+1) + 2000);
+	var timer = Math.floor(Math.random() * ((5500-1000)+1) + 1000);
 	setTimeout(function() {
-		document.getElementById("full-page").style = 'background-color: rgba(1, 1, 1, 0.4);';
+		// not loading anymore
+		document.getElementById("loading-back").style.display = 'none';
+		document.getElementById("adjustable-height").style.position = 'relative';
 	 	document.getElementById("adjustable-height").style.display = 'block';
 	 	document.getElementById("loading-wheel").style.display = 'none';
-	 	//scroll to bottom of div
-		$("#adjustable-height").animate({ scrollTop: $('#adjustable-height').prop("scrollHeight")}, 1000);
+	 	document.getElementById("body-all").style.overflow = 'scroll';
+	 	document.getElementById("nav_bar").style.display = 'block';
+	 	document.getElementById("foot").style.display = 'block';
+	 	document.getElementById("foot").style.position = 'relative';
+	 	//scroll to bottom of page
+	 	$('html, body').animate({
+        	scrollTop: $("#ask-him").offset().top
+    	}, 1000);
 	}, timer);
 	// do nothing if no text
 	if (form.inputbox.value == '') {

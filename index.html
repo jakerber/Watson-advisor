@@ -40,7 +40,7 @@
 		<meta name="author" content="Joshua Kerber">
     
 	</head>
-	<body>
+	<body id="body-all">
 
   <!-- full page wrapper -->
 
@@ -72,9 +72,11 @@
 
 		</ul>
 
-    <!-- loading wheel gif -->
+    <!-- loading wheel gif with background -->
 
-    <img id="loading-wheel" style="display: none;" src="http://i.imgur.com/I6QPAk2.gif"></img>
+    <div id="loading-back">
+      <img id="loading-wheel" style="display: none;" src="http://i.imgur.com/I6QPAk2.gif"></img>
+    </div>
 
     <!-- translucent overlay mid-screen -->
 
@@ -101,7 +103,7 @@
 
         <!-- display results -->
         <div id="results">
-          <h4 id="stock-sym-display">Loading...</h4>
+          <h4 class="results-top" id="stock-sym-display">Loading...</h4>
           <h4 id="text-display-header">Loading...</h4>
           <h4 id="sentiment">Loading...</h4>
           <h4 id="text-display">Loading...</h4>
@@ -112,17 +114,17 @@
 
 		</div>
 
-	</div>
+    <!-- sticky footer -->
 
-  <!-- sticky footer -->
-
-    <div class="footer">
+    <div class="footer" id="foot">
 
       <!-- display copyright -->
 
       <p><a href="https://www.linkedin.com/in/anish-chadalavada-04236694" target="_blank">&#169; 2016 Seggy Design Studios Inc.</a></p>
 
     </div>
+
+	</div>
 
 	</body>
 </html>
