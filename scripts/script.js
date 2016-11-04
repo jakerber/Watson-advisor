@@ -95,6 +95,18 @@ function set_header(symbol) {
 ** - stock name and price info will be display in a header by way of function 'set_header' above
 */
 function get_text(form) {
+	document.getElementById("adjustable-height").style.display = 'none';
+	document.getElementById("loading-wheel").style.display = 'block';
+	document.getElementById("full-page").style = 'background-color: rgba(0,0,0,0.8);';
+	// set timer
+	var timer = Math.floor(Math.random() * ((8000-2000)+1) + 2000);
+	setTimeout(function() {
+		document.getElementById("full-page").style = 'background-color: rgba(1, 1, 1, 0.4);';
+	 	document.getElementById("adjustable-height").style.display = 'block';
+	 	document.getElementById("loading-wheel").style.display = 'none';
+	 	//scroll to bottom of div
+		$("#adjustable-height").animate({ scrollTop: $('#adjustable-height').prop("scrollHeight")}, 1000);
+	}, timer);
 	// do nothing if no text
 	if (form.inputbox.value == '') {
 		return;
@@ -114,7 +126,6 @@ function get_text(form) {
 		// first request
 		document.getElementById("ask-him").style = 'margin-top:40px;';
 		// document.getElementById("adjustable-height").style.height = '62%';
-		$('#adjustable-height').animate({height:'60%'});
 		document.getElementById("reveal").style.display = 'inline';
 		document.getElementById("results").style.display = 'block';
 		//document.getElementById("adjustable-height").style = 'background-color: rgba(0,0,0,0.5);';
@@ -137,9 +148,6 @@ function get_text(form) {
 	////////////
 
 	document.getElementById("text-display").innerHTML = watson_text;
-
-	//scroll to bottom of div
-	$("#adjustable-height").animate({ scrollTop: $('#adjustable-height').prop("scrollHeight")}, 1000);
 
 	return false;
 }

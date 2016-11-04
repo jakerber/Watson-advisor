@@ -44,7 +44,7 @@
 
   <!-- full page wrapper -->
 
-	<div class="transparent">
+	<div class="transparent" id="full-page">
 
     <!-- header -->
 
@@ -60,7 +60,7 @@
 
       <!-- page title -->
 
-      <span>Financial Advisor Watson</span>
+      <span><a style="text-decoration: none;" href="">Financial Advisor Watson</a></span>
 
       <!-- ibm logo/link -->
 
@@ -71,6 +71,10 @@
       </li>
 
 		</ul>
+
+    <!-- loading wheel gif -->
+
+    <img id="loading-wheel" style="display: none;" src="http://i.imgur.com/I6QPAk2.gif"></img>
 
     <!-- translucent overlay mid-screen -->
 
@@ -96,7 +100,6 @@
         <button id="liquidate-3" onclick="rec_audio()" class="fill-div"><i class="material-icons">info</i></button>
 
         <!-- display results -->
-
         <div id="results">
           <h4 id="stock-sym-display">Loading...</h4>
           <h4 id="text-display-header">Loading...</h4>
@@ -109,7 +112,9 @@
 
 		</div>
 
-    <!-- sticky footer -->
+	</div>
+
+  <!-- sticky footer -->
 
     <div class="footer">
 
@@ -119,6 +124,5 @@
 
     </div>
 
-	</div>
 	</body>
 </html>
