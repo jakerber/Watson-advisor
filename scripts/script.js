@@ -33,6 +33,10 @@ function set_header(symbol) {
 				info_header = name + '<br> $' + Number(price).toFixed(2) + ' (' + change + ') as of ' + time;
 			}
 			//get sentiment data if valid stock
+			/****** don't look!!! ******/
+			// USERNAME: c368e358-6de7-47f5-92cc-a4b3cffc01b0
+			// PASSWORD: q4vS8yNgAc
+			/***************************/
 			var pos_url = 'https://c368e358-6de7-47f5-92cc-a4b3cffc01b0:q4vS8yNgAc@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + symbol.toUpperCase() + '+positive&from=5&size=5&context=';
 			var neg_url = 'https://c368e358-6de7-47f5-92cc-a4b3cffc01b0:q4vS8yNgAc@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + symbol.toUpperCase() + '+negative&from=5&size=5&context=';
 			var pos_score = '';
@@ -113,7 +117,7 @@ function get_text(form) {
 		$('#adjustable-height').animate({height:'60%'});
 		document.getElementById("reveal").style.display = 'inline';
 		document.getElementById("results").style.display = 'block';
-		document.getElementById("adjustable-height").style = 'background-color: rgba(0,0,0,0.5);';
+		//document.getElementById("adjustable-height").style = 'background-color: rgba(0,0,0,0.5);';
 
 		// liquidate elements
 		var max_liq = 2;

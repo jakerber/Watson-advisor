@@ -32,6 +32,15 @@ margin: 0;
 padding: 0;
 overflow: hidden;
 z-index: 1000;
+text-align: center;
+}
+
+#nav_bar span {
+display: inline-block;
+padding-top: 8px;
+font-family: 'Bungee Hairline', 'Montserrat';
+font-size: 40px;
+font-weight: 100;
 }
 
 .nav_item {
@@ -87,7 +96,7 @@ background-color: rgba(1, 1, 1, 0.4);
 .overlay {
 height: 380px;
 width: 900px;
-background-color: rgba(0,0,0,0.2);
+background-color: rgba(0,0,0,0.7);
 left: 0; right: 0; top: 20%;
 margin-right: auto; margin-left: auto;
 border-radius: 15px;
@@ -286,6 +295,9 @@ height: 70px;
 /*==========================
 *      BIGGER FONTS
 *===========================*/
+#nav_bar span {
+padding-top: 28px;
+}
 #ask-him input {
 margin-bottom: 20px;
 font-size: 32px;
@@ -297,5 +309,10 @@ font-size: 50px;
 #reveal {
 height: 150px;
 width: 150px;
+}
+}
+@media screen and (max-device-width: 280px){
+#nav_bar span {
+display: none;
 }
 }
