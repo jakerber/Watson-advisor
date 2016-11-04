@@ -193,6 +193,10 @@ color: white;
 opacity: 1;
 }
 
+#results h4 a {
+color: white;
+}
+
 #reveal {
 padding-top: 10px;
 padding-bottom: 40px;

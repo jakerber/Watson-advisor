@@ -8,6 +8,10 @@ function rec_audio() {
 	alert('Coming soon!');
 }
 
+function not_working() {
+	alert('Coming soon!');
+}
+
 function set_header(symbol) {
 	var callback = function(data) {
         var price = data.query.results.quote.Ask;
@@ -16,12 +20,12 @@ function set_header(symbol) {
         var info_header = '';
         if (price == null || price == undefined) {
         	document.getElementById("sentiment").style.display = 'none';
-			info_header = 'Stock symbol ' + symbol + ' not found. A full list of stock symbols can be online at http://eoddata.com/symbols.aspx';
+			info_header = 'Oops! ' + symbol.toUpperCase() + ' is not a valid stock symbol.<br>You can find a full list of ticker symbols online <a href="http://eoddata.com/symbols.aspx" target="_blank">here</a>.<br><br><a href="#" onclick="not_working();">Still not working?</a>';
 		} else {
 			if (change == null) {
-				info_header = name + ' — $' + price;
+				info_header = name + ' — $' + Number(price).toFixed(2);
 			} else {
-				info_header = name + ' — $' + price + ' (' + change + ')';
+				info_header = name + ' — $' + Number(price).toFixed(2) + ' (' + change + ')';
 			}
 			//get sentiment data if valid stock
 			var pos_url = 'https://c368e358-6de7-47f5-92cc-a4b3cffc01b0:q4vS8yNgAc@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + symbol.toUpperCase() + '+positive&from=5&size=5&context=';
@@ -46,11 +50,17 @@ function set_header(symbol) {
 						if (pos_score == '' && neg_score == '') {
 							score_header = 'No sentiment analysis available for ' + symbol.toUpperCase();
 						} else if (pos_score == '' && neg_score != '') {
-							score_header = 'Sentiment analysis: Positive ' + pos_score;
+							score_header = 'Sentiment Analysis<br>Positive: ' + pos_score;
 						} else if (neg_score == '' && pos_score != '') {
-							score_header = 'Sentiment analysis: Negative ' + neg_score;
+							score_header = 'Sentiment Analysis<br>Negative: ' + neg_score;
 						} else {
-							score_header = 'Sentiment analysis: Positive ' + pos_score + ', ' + 'Negative ' + neg_score;
+							if ((Number(pos_score) + Number(neg_score)) != 0) {
+								var pos_perc = (Number(pos_score) / (Number(pos_score) + Number(neg_score))) * 100;
+								var neg_perc = (Number(neg_score) / (Number(pos_score) + Number(neg_score))) * 100;
+								score_header = 'Sentiment Analysis<br>Positive: ' + pos_score + ' (' + pos_perc.toFixed(2).toString() + '%), Negative: ' + neg_score + ' (' + neg_perc.toFixed(2).toString() + '%)';
+							} else {
+								score_header = 'Sentiment Analysis<br>Positive: ' + pos_score + ', ' + 'Negative: ' + neg_score;
+							}
 						}
 			    	}
 			    	// set header with results
@@ -85,7 +95,7 @@ function get_text(form) {
 	document.getElementById("text-display").innerHTML = 'Loading...';
 	document.getElementById("text-display-header").innerHTML = 'Loading...';
 	document.getElementById("sentiment").innerHTML = 'Loading...';
-	document.getElementById("sentiment").style.display = 'inline-block';
+	document.getElementById("sentiment").style.display = 'block';
 	// change displays
 	document.getElementById("text-input").value = '';
 	document.getElementById("text-input").placeholder = 'Enter a new stock symbol...';
