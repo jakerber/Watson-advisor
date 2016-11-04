@@ -17,15 +17,20 @@ function set_header(symbol) {
         var price = data.query.results.quote.Ask;
         var name = data.query.results.quote.Name;
         var change = data.query.results.quote.PercentChange;
+        var time = data.query.results.quote.LastTradeTime;
         var info_header = '';
         if (price == null || price == undefined) {
         	document.getElementById("sentiment").style.display = 'none';
 			info_header = 'Oops! ' + symbol.toUpperCase() + ' is not a valid stock symbol.<br>You can find a full list of ticker symbols online <a href="http://eoddata.com/symbols.aspx" target="_blank">here</a>.<br><br><a href="#" onclick="not_working();">Still not working?</a>';
 		} else {
+			if (name == null) {
+				document.getElementById("text-display-header").innerHTML = 'An unexpected error occured<br>Please try again';
+				return;
+			}
 			if (change == null) {
-				info_header = name + ' — $' + Number(price).toFixed(2);
+				info_header = name + '<br> $' + Number(price).toFixed(2) + ' as of ' + time;
 			} else {
-				info_header = name + ' — $' + Number(price).toFixed(2) + ' (' + change + ')';
+				info_header = name + '<br> $' + Number(price).toFixed(2) + ' (' + change + ') as of ' + time;
 			}
 			//get sentiment data if valid stock
 			var pos_url = 'https://c368e358-6de7-47f5-92cc-a4b3cffc01b0:q4vS8yNgAc@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + symbol.toUpperCase() + '+positive&from=5&size=5&context=';
@@ -76,6 +81,7 @@ function set_header(symbol) {
 	// this is the lovely YQL query (html encoded) which lets us get the stock price:
 	// select * from html where url="http://finance.yahoo.com/q?s=goog" and xpath='//span[@id="yfs_l10_goog"]'
 	var data = 'q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22' + symbol + '%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=';
+	//alert(url + '?' + data);
 	$.getJSON(url, data, callback);
 }
 
