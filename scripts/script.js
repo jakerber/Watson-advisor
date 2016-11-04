@@ -15,6 +15,7 @@ function set_header(symbol) {
         var change = data.query.results.quote.PercentChange;
         var info_header = '';
         if (price == null || price == undefined) {
+        	document.getElementById("sentiment").style.display = 'none';
 			info_header = 'Stock symbol ' + symbol + ' not found. A full list of stock symbols can be online at http://eoddata.com/symbols.aspx';
 		} else {
 			if (change == null) {
@@ -22,10 +23,45 @@ function set_header(symbol) {
 			} else {
 				info_header = name + ' — $' + price + ' (' + change + ')';
 			}
+			//get sentiment data if valid stock
+			var pos_url = 'https://c368e358-6de7-47f5-92cc-a4b3cffc01b0:q4vS8yNgAc@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + symbol.toUpperCase() + '+positive&from=5&size=5&context=';
+			var neg_url = 'https://c368e358-6de7-47f5-92cc-a4b3cffc01b0:q4vS8yNgAc@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + symbol.toUpperCase() + '+negative&from=5&size=5&context=';
+			var pos_score = '';
+			var neg_score = '';
+			// sentiment ajax call to php
+			$.ajax({
+			    type: "POST",
+			    url: './scripts/get_sent.php',
+			    dataType: 'json',
+			    data: {functionname: 'call_api', arguments: [pos_url, neg_url]},
+			    success: function (obj, textstatus) {
+			    	// check for error
+			    	if (obj.error == 'error') {
+			    		score_header = 'No sentiment analysis available for ' + symbol.toUpperCase();
+			    	} else {
+			    		pos_score = obj.result_pos;
+						neg_score = obj.result_neg;
+						// parse results for scores
+						var score_header = '';
+						if (pos_score == '' && neg_score == '') {
+							score_header = 'No sentiment analysis available for ' + symbol.toUpperCase();
+						} else if (pos_score == '' && neg_score != '') {
+							score_header = 'Sentiment analysis: Positive ' + pos_score;
+						} else if (neg_score == '' && pos_score != '') {
+							score_header = 'Sentiment analysis: Negative ' + neg_score;
+						} else {
+							score_header = 'Sentiment analysis: Positive ' + pos_score + ', ' + 'Negative ' + neg_score;
+						}
+			    	}
+			    	// set header with results
+					document.getElementById("sentiment").innerHTML = score_header;
+            	}
+			});
 		}
 		document.getElementById("text-display-header").innerHTML = info_header;
     };
 
+    // get stock data
 	var url = 'http://query.yahooapis.com/v1/public/yql';
 	// this is the lovely YQL query (html encoded) which lets us get the stock price:
 	// select * from html where url="http://finance.yahoo.com/q?s=goog" and xpath='//span[@id="yfs_l10_goog"]'
@@ -39,11 +75,17 @@ function set_header(symbol) {
 ** - stock name and price info will be display in a header by way of function 'set_header' above
 */
 function get_text(form) {
+	// do nothing if no text
+	if (form.inputbox.value == '') {
+		return;
+	}
 	// get text from user, display stock symbol
 	var user_input = form.inputbox.value;
 	document.getElementById("stock-sym-display").innerHTML = user_input.toUpperCase();
 	document.getElementById("text-display").innerHTML = 'Loading...';
 	document.getElementById("text-display-header").innerHTML = 'Loading...';
+	document.getElementById("sentiment").innerHTML = 'Loading...';
+	document.getElementById("sentiment").style.display = 'inline-block';
 	// change displays
 	document.getElementById("text-input").value = '';
 	document.getElementById("text-input").placeholder = 'Enter a new stock symbol...';

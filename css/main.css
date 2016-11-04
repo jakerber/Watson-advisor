@@ -223,12 +223,6 @@ color: rgba(0,0,0,0.5);
 }
 
 .footer a:hover {
-transition-property: all;
-transition-duration: 1s;
-padding: 15px;
-padding-left: 30px;
-padding-right: 30px;
-background-color: rgba(11, 181, 255, 0.15);
 color: rgba(0,0,0,0.65);
 }
 
