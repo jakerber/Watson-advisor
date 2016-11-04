@@ -96,7 +96,7 @@ background-color: rgba(1, 1, 1, 0.4);
 .overlay {
 height: 380px;
 width: 900px;
-background-color: rgba(0,0,0,0.7);
+background-color: rgba(0,0,0,0.85);
 left: 0; right: 0; top: 20%;
 margin-right: auto; margin-left: auto;
 border-radius: 15px;
