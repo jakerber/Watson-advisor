@@ -150,7 +150,6 @@ function set_header(symbol) {
 			    	}
 			    	// set header with results
 					document.getElementById("sentiment").innerHTML = score_header;
-					alert('done');
             	},
             	error: function (xhr, ajaxOptions, thrownError) {
             		alert('Error \'' + thrownError + '\' has occured (' + xhr.status + '). We apologize for this inconvenience. Please try again in a few moments.');
