@@ -87,14 +87,14 @@ function set_header(symbol) {
 						if (pos_score == '' && neg_score == '') {
 							score_header = 'No sentiment analysis available for ' + symbol.toUpperCase();
 						} else if (pos_score == '' && neg_score != '') {
-							score_header = 'Sentiment Analysis<br>Negative: ' + pos_score + '<br>';
+							score_header = 'Sentiment Analysis with Twitter<br><img id="twtr-logo" src="https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Twitter_bird_logo_2012.svg/1259px-Twitter_bird_logo_2012.svg.png"></img><br>Negative: ' + pos_score + '<br>';
 							// add tweets
 							if (symbol.toUpperCase().length > 2) {
 								json_p = JSON.parse(obj.all_neg);
 			    				render_twitter_json(json_p);
 							}
 						} else if (neg_score == '' && pos_score != '') {
-							score_header = 'Sentiment Analysis<br>Positive: ' + neg_score + '<br>';
+							score_header = 'Sentiment Analysis with Twitter<br><img id="twtr-logo" src="https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Twitter_bird_logo_2012.svg/1259px-Twitter_bird_logo_2012.svg.png"></img><br>Positive: ' + neg_score + '<br>';
 							// add tweets
 							if (symbol.toUpperCase().length > 2) {
 								json_p = JSON.parse(obj.all_pos);
@@ -104,9 +104,9 @@ function set_header(symbol) {
 							if ((Number(pos_score) + Number(neg_score)) != 0) {
 								var pos_perc = (Number(pos_score) / (Number(pos_score) + Number(neg_score))) * 100;
 								var neg_perc = (Number(neg_score) / (Number(pos_score) + Number(neg_score))) * 100;
-								score_header = 'Sentiment Analysis<br>Positive: ' + pos_score + ' (' + pos_perc.toFixed(2).toString() + '%), Negative: ' + neg_score + ' (' + neg_perc.toFixed(2).toString() + '%)' + '<br>';
+								score_header = 'Sentiment Analysis with Twitter<br><img id="twtr-logo" src="https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Twitter_bird_logo_2012.svg/1259px-Twitter_bird_logo_2012.svg.png"></img><br>Positive: ' + pos_score + ' (' + pos_perc.toFixed(2).toString() + '%),<br>Negative: ' + neg_score + ' (' + neg_perc.toFixed(2).toString() + '%)' + '<br>';
 							} else {
-								score_header = 'Sentiment Analysis<br>Positive: ' + pos_score + ', ' + 'Negative: ' + neg_score + '<br>';
+								score_header = 'Sentiment Analysis with Twitter<br><img id="twtr-logo" src="https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Twitter_bird_logo_2012.svg/1259px-Twitter_bird_logo_2012.svg.png"></img><br>Positive: ' + pos_score + ',<br>' + 'Negative: ' + neg_score + '<br>';
 							}
 							if (symbol.toUpperCase().length > 2) {
 								json_p = JSON.parse(obj.all_pos);
