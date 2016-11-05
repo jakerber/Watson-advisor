@@ -30,7 +30,7 @@ top: 0;
 left: 0;
 width: 100%;
 margin: 0px;
-margin-bottom: 7.5%;
+margin-bottom: 5%;
 padding: 0;
 overflow: hidden;
 z-index: 9999;
@@ -104,7 +104,7 @@ min-height: 380px;
 width: 900px;
 background-color: rgba(0,0,0,0.85);
 left: 0; right: 0;
-margin-right: auto; margin-left: auto; margin-top: 50px;
+margin-right: auto; margin-left: auto;
 border-radius: 15px;
 text-align: center;
 font-family: sans-serif;
@@ -303,7 +303,7 @@ height: 80px;
 font-size: 30px;
 }
 #nav_bar {
-margin-bottom: 20%;
+margin-bottom: 10%;
 }
 /*==========================
 *      TALLER OVERLAY
