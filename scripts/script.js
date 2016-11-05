@@ -13,6 +13,7 @@ function not_working() {
 }
 
 function render_tweet(div_id, tweet_id) {
+	// add tweets to div on screen
 	twttr.widgets.createTweet(
 	  	tweet_id,
 	  	document.getElementById(div_id),
@@ -29,6 +30,7 @@ function render_twitter_json(json_in) {
 	var url = '';
 	var url_array = [];
 	var tweet_id = '';
+	// get tweet urls from json response
 	for (var i = 0; i < 2; i++) {
 		if (json_in.tweets[i]) {
 			url = json_in.tweets[i].message.link;
@@ -41,15 +43,19 @@ function render_twitter_json(json_in) {
 
 function set_header(symbol) {
 	var callback = function(data) {
+		// parse response for data
         var price = data.query.results.quote.Ask;
         var name = data.query.results.quote.Name;
         var change = data.query.results.quote.PercentChange;
         var time = data.query.results.quote.LastTradeTime;
         var info_header = '';
+
         if (price == null || price == undefined) {
+			// no data found
         	document.getElementById("sentiment").style.display = 'none';
 			info_header = 'Oops! ' + symbol.toUpperCase() + ' is not a valid stock symbol.<br>You can find a full list of ticker symbols online <a href="http://eoddata.com/symbols.aspx" target="_blank">here</a>.<br><br><a href="#" onclick="not_working();">Still not working?</a>';
 		} else {
+			// display stock data
 			if (name == null) {
 				document.getElementById("text-display-header").innerHTML = 'An unexpected error occured<br>Please try again';
 				return;
@@ -59,6 +65,7 @@ function set_header(symbol) {
 			} else {
 				info_header = name + '<br> $' + Number(price).toFixed(2) + ' (' + change + ') as of ' + time + '<br><span id="line-white"></span>';
 			}
+
 			//get sentiment data if valid stock
 			/****** don't look!!! ******/
 			// USERNAME: c368e358-6de7-47f5-92cc-a4b3cffc01b0
@@ -68,6 +75,7 @@ function set_header(symbol) {
 			var neg_url = 'https://c368e358-6de7-47f5-92cc-a4b3cffc01b0:q4vS8yNgAc@cdeservice.mybluemix.net:443/api/v1/messages/search?q=$' + symbol.toUpperCase() + '+negative&size=5&context=';
 			var pos_score = '';
 			var neg_score = '';
+
 			// sentiment ajax call to php
 			$.ajax({
 			    type: "POST",
@@ -82,33 +90,36 @@ function set_header(symbol) {
 			    		var json_p = null;
 			    		pos_score = obj.result_pos;
 						neg_score = obj.result_neg;
+
 						// parse results for scores
 						var score_header = '';
 						if (pos_score == '' && neg_score == '') {
 							score_header = 'No sentiment analysis available for ' + symbol.toUpperCase();
 						} else if (pos_score == '' && neg_score != '') {
-							score_header = 'Sentiment Analysis with Twitter<br><img id="twtr-logo" src="https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Twitter_bird_logo_2012.svg/1259px-Twitter_bird_logo_2012.svg.png"></img><br>Negative: ' + pos_score + '<br>';
+							score_header = 'Sentiment Analysis with Twitter<br><a href="http://twitter.com"><img id="twtr-logo" src="https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Twitter_bird_logo_2012.svg/1259px-Twitter_bird_logo_2012.svg.png"></img></a><br>Negative: ' + pos_score + '<br>';
 							// add tweets
 							if (symbol.toUpperCase().length > 2) {
 								json_p = JSON.parse(obj.all_neg);
 			    				render_twitter_json(json_p);
 							}
 						} else if (neg_score == '' && pos_score != '') {
-							score_header = 'Sentiment Analysis with Twitter<br><img id="twtr-logo" src="https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Twitter_bird_logo_2012.svg/1259px-Twitter_bird_logo_2012.svg.png"></img><br>Positive: ' + neg_score + '<br>';
+							score_header = 'Sentiment Analysis with Twitter<br><a href="http://twitter.com"><img id="twtr-logo" src="https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Twitter_bird_logo_2012.svg/1259px-Twitter_bird_logo_2012.svg.png"></img></a><br>Positive: ' + neg_score + '<br>';
 							// add tweets
 							if (symbol.toUpperCase().length > 2) {
 								json_p = JSON.parse(obj.all_pos);
 			    				render_twitter_json(json_p);
 							}
 						} else {
+							// display text
 							if ((Number(pos_score) + Number(neg_score)) != 0) {
 								var pos_perc = (Number(pos_score) / (Number(pos_score) + Number(neg_score))) * 100;
 								var neg_perc = (Number(neg_score) / (Number(pos_score) + Number(neg_score))) * 100;
-								score_header = 'Sentiment Analysis with Twitter<br><img id="twtr-logo" src="https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Twitter_bird_logo_2012.svg/1259px-Twitter_bird_logo_2012.svg.png"></img><br>Positive: ' + pos_score + ' (' + pos_perc.toFixed(2).toString() + '%),<br>Negative: ' + neg_score + ' (' + neg_perc.toFixed(2).toString() + '%)' + '<br>';
+								score_header = 'Sentiment Analysis with Twitter<br><a href="http://twitter.com"><img id="twtr-logo" src="https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Twitter_bird_logo_2012.svg/1259px-Twitter_bird_logo_2012.svg.png"></img></a><br>Positive: ' + pos_score + ' (' + pos_perc.toFixed(2).toString() + '%),<br>Negative: ' + neg_score + ' (' + neg_perc.toFixed(2).toString() + '%)' + '<br>';
 							} else {
-								score_header = 'Sentiment Analysis with Twitter<br><img id="twtr-logo" src="https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Twitter_bird_logo_2012.svg/1259px-Twitter_bird_logo_2012.svg.png"></img><br>Positive: ' + pos_score + ',<br>' + 'Negative: ' + neg_score + '<br>';
+								score_header = 'Sentiment Analysis with Twitter<br><a href="http://twitter.com"><img id="twtr-logo" src="https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Twitter_bird_logo_2012.svg/1259px-Twitter_bird_logo_2012.svg.png"></img></a><br>Positive: ' + pos_score + ',<br>' + 'Negative: ' + neg_score + '<br>';
 							}
 							if (symbol.toUpperCase().length > 2) {
+								// add tweets
 								json_p = JSON.parse(obj.all_pos);
 				    			render_twitter_json(json_p);
 				    			json_p = JSON.parse(obj.all_neg);
@@ -126,6 +137,7 @@ function set_header(symbol) {
 
     // get stock data
 	var url = 'http://query.yahooapis.com/v1/public/yql';
+
 	// this is the lovely YQL query (html encoded) which lets us get the stock price:
 	// select * from html where url="http://finance.yahoo.com/q?s=goog" and xpath='//span[@id="yfs_l10_goog"]'
 	var data = 'q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22' + symbol + '%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=';
@@ -145,8 +157,10 @@ function get_text(form) {
 	document.getElementById("loading-back").style.display = 'block';
 	document.getElementById("nav_bar").style.display = 'none';
 	document.getElementById("foot").style.display = 'none';
+
 	// clear previous tweet displays
 	$(".tweet-div").empty();
+
 	// set timer
 	var timer = Math.floor(Math.random() * ((8000-3000)+1) + 3000);
 	setTimeout(function() {
@@ -159,11 +173,13 @@ function get_text(form) {
 	 	document.getElementById("nav_bar").style.display = 'block';
 	 	document.getElementById("foot").style.display = 'block';
 	 	document.getElementById("foot").style.position = 'relative';
+
 	 	//scroll to bottom of page
 	 	$('html, body').animate({
         	scrollTop: $("#ask-him").offset().top
     	}, 1000);
 	}, timer);
+
 	// do nothing if no text
 	if (form.inputbox.value == '') {
 		return;
@@ -175,17 +191,15 @@ function get_text(form) {
 	document.getElementById("text-display-header").innerHTML = 'Loading...';
 	document.getElementById("sentiment").innerHTML = 'Loading...';
 	document.getElementById("sentiment").style.display = 'block';
+
 	// change displays
 	document.getElementById("text-input").value = '';
 	document.getElementById("text-input").placeholder = 'Enter a new stock symbol...';
 
 	if (page_load == false) {
 		// first request
-		document.getElementById("ask-him").style = 'margin-top:40px;';
-		// document.getElementById("adjustable-height").style.height = '62%';
 		document.getElementById("reveal").style.display = 'inline';
 		document.getElementById("results").style.display = 'block';
-		//document.getElementById("adjustable-height").style = 'background-color: rgba(0,0,0,0.5);';
 
 		// liquidate elements
 		var max_liq = 2;
