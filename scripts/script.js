@@ -1,18 +1,25 @@
 var page_load = false;
+var rendered_tweets = [];
+var help_message = 'Coming soon!';
 
 window.onload = function(){
 	window.location = "http://www.cs.dartmouth.edu/~jkerber14/watson/?inputbox=#";
 }
 
-function rec_audio() {
-	alert('Coming soon!');
-}
-
-function not_working() {
-	alert('Coming soon!');
+function get_help() {
+	alert(help_message);
+	return false;
 }
 
 function render_tweet(div_id, tweet_id) {
+	// ensure tweet wasn't already rendered
+	for (var i = 0; i < rendered_tweets.length; i++) {
+		if (rendered_tweets[i] == tweet_id) {
+			// bad
+			return 1;
+		}
+	}
+
 	// add tweets to div on screen
 	twttr.widgets.createTweet(
 	  	tweet_id,
@@ -21,23 +28,44 @@ function render_tweet(div_id, tweet_id) {
 	    	theme: 'dark'
 	  	}
 	);
+
+	// good
+	rendered_tweets.push(tweet_id);
+	return 0;
 }
 
 function render_twitter_json(json_in) {
+	// check for input
 	if (!json_in) {
 		return;
 	}
+
+	// loop through json and render tweets
 	var url = '';
 	var url_array = [];
+	var symbols = [];
 	var tweet_id = '';
-	// get tweet urls from json response
-	for (var i = 0; i < 2; i++) {
+	var i = 0;
+	var tweets_done = 0;
+	while (tweets_done < 3 && i < 100) {
+		//if tweet exists
 		if (json_in.tweets[i]) {
-			url = json_in.tweets[i].message.link;
-			url_array = url.split('/');
-			tweet_id = url_array[url_array.length-1];
-			render_tweet('tweet-container', tweet_id);
+
+			// make sure it has symbols $
+			symbols = json_in.tweets[i].message.twitter_entities.symbols;
+			if (symbols.length > 0) {
+				url = json_in.tweets[i].message.link;
+				url_array = url.split('/');
+				tweet_id = url_array[url_array.length-1];
+
+				// render
+				if (render_tweet('tweet-container', tweet_id) == 0) {
+					// tweet was rendered, count it
+					tweets_done++;
+				}
+			}
 		}
+		i++;
 	}
 }
 
@@ -53,7 +81,7 @@ function set_header(symbol) {
         if (price == null || price == undefined) {
 			// no data found
         	document.getElementById("sentiment").style.display = 'none';
-			info_header = 'Oops! ' + symbol.toUpperCase() + ' is not a valid stock symbol.<br>You can find a full list of ticker symbols online <a href="http://eoddata.com/symbols.aspx" target="_blank">here</a>.<br><br><a href="#" onclick="not_working();">Still not working?</a>';
+			info_header = 'Oops! ' + symbol.toUpperCase() + ' is not a valid stock symbol.<br>You can find a full list of ticker symbols online <a href="http://eoddata.com/symbols.aspx" target="_blank">here</a>.<br>';
 		} else {
 			// display stock data
 			if (name == null) {
@@ -71,8 +99,8 @@ function set_header(symbol) {
 			// USERNAME: c368e358-6de7-47f5-92cc-a4b3cffc01b0
 			// PASSWORD: q4vS8yNgAc
 			/***************************/
-			var pos_url = 'https://c368e358-6de7-47f5-92cc-a4b3cffc01b0:q4vS8yNgAc@cdeservice.mybluemix.net:443/api/v1/messages/search?q=$' + symbol.toUpperCase() + '+positive&size=5&context=';
-			var neg_url = 'https://c368e358-6de7-47f5-92cc-a4b3cffc01b0:q4vS8yNgAc@cdeservice.mybluemix.net:443/api/v1/messages/search?q=$' + symbol.toUpperCase() + '+negative&size=5&context=';
+			var pos_url = 'https://c368e358-6de7-47f5-92cc-a4b3cffc01b0:q4vS8yNgAc@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + symbol.toUpperCase() + '%20sentiment%3Apositive%20lang%3Aen%20&size=100&context=';//is%3Averified
+			var neg_url = 'https://c368e358-6de7-47f5-92cc-a4b3cffc01b0:q4vS8yNgAc@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + symbol.toUpperCase() + '%20sentiment%3Anegative%20lang%3Aen%20&size=100&context='; //is%3Averified
 			var pos_score = '';
 			var neg_score = '';
 
@@ -98,17 +126,13 @@ function set_header(symbol) {
 						} else if (pos_score == '' && neg_score != '') {
 							score_header = 'Sentiment Analysis with Twitter<br><a href="http://twitter.com"><img id="twtr-logo" src="https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Twitter_bird_logo_2012.svg/1259px-Twitter_bird_logo_2012.svg.png"></img></a><br>Negative: ' + pos_score + '<br>';
 							// add tweets
-							if (symbol.toUpperCase().length > 2) {
-								json_p = JSON.parse(obj.all_neg);
-			    				render_twitter_json(json_p);
-							}
+							json_p = JSON.parse(obj.all_neg);
+		    				render_twitter_json(json_p);
 						} else if (neg_score == '' && pos_score != '') {
 							score_header = 'Sentiment Analysis with Twitter<br><a href="http://twitter.com"><img id="twtr-logo" src="https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Twitter_bird_logo_2012.svg/1259px-Twitter_bird_logo_2012.svg.png"></img></a><br>Positive: ' + neg_score + '<br>';
 							// add tweets
-							if (symbol.toUpperCase().length > 2) {
-								json_p = JSON.parse(obj.all_pos);
-			    				render_twitter_json(json_p);
-							}
+							json_p = JSON.parse(obj.all_pos);
+		    				render_twitter_json(json_p);
 						} else {
 							// display text
 							if ((Number(pos_score) + Number(neg_score)) != 0) {
@@ -118,18 +142,21 @@ function set_header(symbol) {
 							} else {
 								score_header = 'Sentiment Analysis with Twitter<br><a href="http://twitter.com"><img id="twtr-logo" src="https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Twitter_bird_logo_2012.svg/1259px-Twitter_bird_logo_2012.svg.png"></img></a><br>Positive: ' + pos_score + ',<br>' + 'Negative: ' + neg_score + '<br>';
 							}
-							if (symbol.toUpperCase().length > 2) {
-								// add tweets
-								json_p = JSON.parse(obj.all_pos);
-				    			render_twitter_json(json_p);
-				    			json_p = JSON.parse(obj.all_neg);
-				    			render_twitter_json(json_p);
-				    		}
+							json_p = JSON.parse(obj.all_pos);
+			    			render_twitter_json(json_p);
+			    			json_p = JSON.parse(obj.all_neg);
+			    			render_twitter_json(json_p);
 						}
 			    	}
 			    	// set header with results
 					document.getElementById("sentiment").innerHTML = score_header;
-            	}
+					alert('done');
+            	},
+            	error: function (xhr, ajaxOptions, thrownError) {
+            		alert('Error \'' + thrownError + '\' has occured (' + xhr.status + '). We apologize for this inconvenience. Please try again in a few moments.');
+            		location.reload();
+            		return;
+			    }
 			});
 		}
 		document.getElementById("text-display-header").innerHTML = info_header;
@@ -160,9 +187,10 @@ function get_text(form) {
 
 	// clear previous tweet displays
 	$(".tweet-div").empty();
+	rendered_tweets = [];
 
 	// set timer
-	var timer = Math.floor(Math.random() * ((8000-3000)+1) + 3000);
+	var timer = Math.floor(Math.random() * ((8500-5000)+1) + 5000);
 	setTimeout(function() {
 		// not loading anymore
 		document.getElementById("loading-back").style.display = 'none';
@@ -172,7 +200,7 @@ function get_text(form) {
 	 	document.getElementById("body-all").style.overflow = 'scroll';
 	 	document.getElementById("nav_bar").style.display = 'block';
 	 	document.getElementById("foot").style.display = 'block';
-	 	document.getElementById("foot").style.position = 'relative';
+	 	// document.getElementById("foot").style.position = 'relative';
 
 	 	//scroll to bottom of page
 	 	$('html, body').animate({
@@ -215,10 +243,9 @@ function get_text(form) {
 
 	///////////// RETRIEVE RESPONSE FROM WATSON HERE
 	//var watson_text = 'Hi there! Thanks for using our service. Unfortunately, we don\'t have it up and running yet. Check back soon. - Team Seggy';
-	var watson_text = 'Hi there! Thanks for using our service. Check back soon for more updates. - Team Seggy';
+	var watson_text = '<a class="help-msg" onclick="get_help();">Not the results you expected?<br><br></a>Hi there! Thanks for using our service. Check back soon for more updates. - Team Seggy';
 	////////////
 
 	document.getElementById("text-display").innerHTML = watson_text;
-
 	return false;
 }

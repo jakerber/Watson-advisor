@@ -248,6 +248,11 @@ width: 100px;
 display: none;
 }
 
+.help-msg {
+text-decoration: underline;
+cursor: pointer;
+}
+
 /*=========================================
 *                 TWEETS
 *=========================================*/
