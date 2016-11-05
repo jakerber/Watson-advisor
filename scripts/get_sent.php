@@ -24,6 +24,8 @@
                 $buffer_neg = curl_exec($curl_handle_neg);
                 curl_close($curl_handle_neg);
                 // add results to array
+                $pos_json = json_decode($buffer_pos);
+                $neg_json = json_decode($buffer_neg);
 				if (empty($buffer_pos) && empty($buffer_neg)){
                     // no results
 				    $result_array['result_pos'] = '';
@@ -34,12 +36,14 @@
                     $pieces = explode("\"", $buffer_neg);
                     $results = $pieces[4];
                     $result_array['result_neg'] = mb_substr($results, 1, strlen($results)-2);
+                    $result_array['all_neg'] = $buffer_neg;
                 } else if (empty($buffer_neg)) {
                     // only results for positive sentiment
                     $result_array['result_neg'] = '';
                     $pieces = explode("\"", $buffer_pos);
                     $results = $pieces[4];
                     $result_array['result_pos'] = mb_substr($results, 1, strlen($results)-2);
+                    $result_array['all_pos'] = $buffer_pos;
                 } else{
                     // complete results
 					$pieces = explode("\"", $buffer_pos);
@@ -48,6 +52,8 @@
                     $pieces = explode("\"", $buffer_neg);
                     $results = $pieces[4];
                     $result_array['result_neg'] = mb_substr($results, 1, strlen($results)-2);
+                    $result_array['all_pos'] = $buffer_pos;
+                    $result_array['all_neg'] = $buffer_neg;
 				}
             }
     }

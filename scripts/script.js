@@ -12,6 +12,33 @@ function not_working() {
 	alert('Coming soon!');
 }
 
+function render_tweet(div_id, tweet_id) {
+	twttr.widgets.createTweet(
+	  	tweet_id,
+	  	document.getElementById(div_id),
+	  	{
+	    	theme: 'dark'
+	  	}
+	);
+}
+
+function render_twitter_json(json_in) {
+	if (!json_in) {
+		return;
+	}
+	var url = '';
+	var url_array = [];
+	var tweet_id = '';
+	for (var i = 0; i < 2; i++) {
+		if (json_in.tweets[i]) {
+			url = json_in.tweets[i].message.link;
+			url_array = url.split('/');
+			tweet_id = url_array[url_array.length-1];
+			render_tweet('tweet-container', tweet_id);
+		}
+	}
+}
+
 function set_header(symbol) {
 	var callback = function(data) {
         var price = data.query.results.quote.Ask;
@@ -28,17 +55,17 @@ function set_header(symbol) {
 				return;
 			}
 			if (change == null) {
-				info_header = name + '<br> $' + Number(price).toFixed(2) + ' as of ' + time;
+				info_header = name + '<br> $' + Number(price).toFixed(2) + ' as of ' + time + '<br><span id="line-white"></span>';
 			} else {
-				info_header = name + '<br> $' + Number(price).toFixed(2) + ' (' + change + ') as of ' + time;
+				info_header = name + '<br> $' + Number(price).toFixed(2) + ' (' + change + ') as of ' + time + '<br><span id="line-white"></span>';
 			}
 			//get sentiment data if valid stock
 			/****** don't look!!! ******/
 			// USERNAME: c368e358-6de7-47f5-92cc-a4b3cffc01b0
 			// PASSWORD: q4vS8yNgAc
 			/***************************/
-			var pos_url = 'https://c368e358-6de7-47f5-92cc-a4b3cffc01b0:q4vS8yNgAc@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + symbol.toUpperCase() + '+positive&from=5&size=5&context=';
-			var neg_url = 'https://c368e358-6de7-47f5-92cc-a4b3cffc01b0:q4vS8yNgAc@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + symbol.toUpperCase() + '+negative&from=5&size=5&context=';
+			var pos_url = 'https://c368e358-6de7-47f5-92cc-a4b3cffc01b0:q4vS8yNgAc@cdeservice.mybluemix.net:443/api/v1/messages/search?q=$' + symbol.toUpperCase() + '+positive&size=5&context=';
+			var neg_url = 'https://c368e358-6de7-47f5-92cc-a4b3cffc01b0:q4vS8yNgAc@cdeservice.mybluemix.net:443/api/v1/messages/search?q=$' + symbol.toUpperCase() + '+negative&size=5&context=';
 			var pos_score = '';
 			var neg_score = '';
 			// sentiment ajax call to php
@@ -52,6 +79,7 @@ function set_header(symbol) {
 			    	if (obj.error == 'error') {
 			    		score_header = 'No sentiment analysis available for ' + symbol.toUpperCase();
 			    	} else {
+			    		var json_p = null;
 			    		pos_score = obj.result_pos;
 						neg_score = obj.result_neg;
 						// parse results for scores
@@ -59,17 +87,33 @@ function set_header(symbol) {
 						if (pos_score == '' && neg_score == '') {
 							score_header = 'No sentiment analysis available for ' + symbol.toUpperCase();
 						} else if (pos_score == '' && neg_score != '') {
-							score_header = 'Sentiment Analysis<br>Positive: ' + pos_score;
+							score_header = 'Sentiment Analysis<br>Negative: ' + pos_score + '<br>';
+							// add tweets
+							if (symbol.toUpperCase().length > 2) {
+								json_p = JSON.parse(obj.all_neg);
+			    				render_twitter_json(json_p);
+							}
 						} else if (neg_score == '' && pos_score != '') {
-							score_header = 'Sentiment Analysis<br>Negative: ' + neg_score;
+							score_header = 'Sentiment Analysis<br>Positive: ' + neg_score + '<br>';
+							// add tweets
+							if (symbol.toUpperCase().length > 2) {
+								json_p = JSON.parse(obj.all_pos);
+			    				render_twitter_json(json_p);
+							}
 						} else {
 							if ((Number(pos_score) + Number(neg_score)) != 0) {
 								var pos_perc = (Number(pos_score) / (Number(pos_score) + Number(neg_score))) * 100;
 								var neg_perc = (Number(neg_score) / (Number(pos_score) + Number(neg_score))) * 100;
-								score_header = 'Sentiment Analysis<br>Positive: ' + pos_score + ' (' + pos_perc.toFixed(2).toString() + '%), Negative: ' + neg_score + ' (' + neg_perc.toFixed(2).toString() + '%)';
+								score_header = 'Sentiment Analysis<br>Positive: ' + pos_score + ' (' + pos_perc.toFixed(2).toString() + '%), Negative: ' + neg_score + ' (' + neg_perc.toFixed(2).toString() + '%)' + '<br>';
 							} else {
-								score_header = 'Sentiment Analysis<br>Positive: ' + pos_score + ', ' + 'Negative: ' + neg_score;
+								score_header = 'Sentiment Analysis<br>Positive: ' + pos_score + ', ' + 'Negative: ' + neg_score + '<br>';
 							}
+							if (symbol.toUpperCase().length > 2) {
+								json_p = JSON.parse(obj.all_pos);
+				    			render_twitter_json(json_p);
+				    			json_p = JSON.parse(obj.all_neg);
+				    			render_twitter_json(json_p);
+				    		}
 						}
 			    	}
 			    	// set header with results
@@ -101,8 +145,10 @@ function get_text(form) {
 	document.getElementById("loading-back").style.display = 'block';
 	document.getElementById("nav_bar").style.display = 'none';
 	document.getElementById("foot").style.display = 'none';
+	// clear previous tweet displays
+	$(".tweet-div").empty();
 	// set timer
-	var timer = Math.floor(Math.random() * ((5500-1000)+1) + 1000);
+	var timer = Math.floor(Math.random() * ((8000-3000)+1) + 3000);
 	setTimeout(function() {
 		// not loading anymore
 		document.getElementById("loading-back").style.display = 'none';
