@@ -81,6 +81,11 @@ function render_twitter_json(json_in) {
 
 function set_header(symbol) {
 	var twitter_callback = function(data) {
+		if (!data.query.results) {
+			alert('An unknown error has occured. We apologize for this inconvenience. Please try again in a few moments.');
+    		location.reload();
+    		return;
+		}
 		// parse response for data
         var price = data.query.results.quote.Ask;
         var name = data.query.results.quote.Name;
@@ -200,13 +205,14 @@ function set_header(symbol) {
 					var url = '';
 					var title = '';
 					// get articles with url
-					for (var i = 0; i < 5; i++) {
+					var loop_max = Math.min(data.result.docs.length, 5);
+					for (var i = 0; i < loop_max; i++) {
 						url = data.result.docs[i].source.enriched.url.url;
 						title = data.result.docs[i].source.enriched.url.title;
 						//alert('found url ' + url + ' and title ' + title);
 						if (url && title) {
 							// add to final display string if not null
-							alchemy_string = alchemy_string + '<a target="_blank" class="news-article" href="' + url + '">' + title + '</a><br>';
+							alchemy_string = alchemy_string + '<a target="_blank" class="news-article" href="' + url + '">' + title + '</a>';
 						}
 					}
 					// send it
