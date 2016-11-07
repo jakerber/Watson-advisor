@@ -1,6 +1,11 @@
 var page_load = false;
 var rendered_tweets = [];
 var help_message = 'Coming soon!';
+var max_tweets = 500;
+var time_min_sec = 6;
+var time_max_sec = 8;
+var twitter_icon_url = 'http://www.qs-asia.com/main/wp-content/uploads/2016/06/twitter.png';
+var overall_score = -1;
 
 window.onload = function(){
 	window.location = "http://www.cs.dartmouth.edu/~jkerber14/watson/?inputbox=#";
@@ -47,7 +52,7 @@ function render_twitter_json(json_in) {
 	var tweet_id = '';
 	var i = 0;
 	var tweets_done = 0;
-	while (tweets_done < 3 && i < 100) {
+	while (tweets_done < 3 && i < max_tweets) {
 		//if tweet exists
 		if (json_in.tweets[i]) {
 
@@ -70,28 +75,29 @@ function render_twitter_json(json_in) {
 }
 
 function set_header(symbol) {
-	var callback = function(data) {
+	var twitter_callback = function(data) {
 		// parse response for data
         var price = data.query.results.quote.Ask;
         var name = data.query.results.quote.Name;
         var change = data.query.results.quote.PercentChange;
-        var time = data.query.results.quote.LastTradeTime;
         var info_header = '';
 
         if (price == null || price == undefined) {
 			// no data found
         	document.getElementById("sentiment").style.display = 'none';
+        	document.getElementById("alchemy").style.display = 'none';
 			info_header = 'Oops! ' + symbol.toUpperCase() + ' is not a valid stock symbol.<br>You can find a full list of ticker symbols online <a href="http://eoddata.com/symbols.aspx" target="_blank">here</a>.<br>';
 		} else {
+			// STOCK IS VALID LET'S GO!!!!
 			// display stock data
 			if (name == null) {
 				document.getElementById("text-display-header").innerHTML = 'An unexpected error occured<br>Please try again';
 				return;
 			}
 			if (change == null) {
-				info_header = name + '<br> $' + Number(price).toFixed(2) + ' as of ' + time + '<br><span id="line-white"></span>';
+				info_header = name + '<br> $' + Number(price).toFixed(2) + '<br><span id="line-white"></span>';
 			} else {
-				info_header = name + '<br> $' + Number(price).toFixed(2) + ' (' + change + ') as of ' + time + '<br><span id="line-white"></span>';
+				info_header = name + '<br> $' + Number(price).toFixed(2) + ' (' + change + ')<br><span id="line-white"></span>';
 			}
 
 			//get sentiment data if valid stock
@@ -99,12 +105,12 @@ function set_header(symbol) {
 			// USERNAME: c368e358-6de7-47f5-92cc-a4b3cffc01b0
 			// PASSWORD: q4vS8yNgAc
 			/***************************/
-			var pos_url = 'https://c368e358-6de7-47f5-92cc-a4b3cffc01b0:q4vS8yNgAc@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + symbol.toUpperCase() + '%20sentiment%3Apositive%20lang%3Aen%20&size=100&context=';//is%3Averified
-			var neg_url = 'https://c368e358-6de7-47f5-92cc-a4b3cffc01b0:q4vS8yNgAc@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + symbol.toUpperCase() + '%20sentiment%3Anegative%20lang%3Aen%20&size=100&context='; //is%3Averified
+			var pos_url = 'https://c368e358-6de7-47f5-92cc-a4b3cffc01b0:q4vS8yNgAc@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + symbol.toUpperCase() + '%20sentiment%3Apositive%20lang%3Aen%20&size=' + max_tweets + '&context=';//is%3Averified
+			var neg_url = 'https://c368e358-6de7-47f5-92cc-a4b3cffc01b0:q4vS8yNgAc@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + symbol.toUpperCase() + '%20sentiment%3Anegative%20lang%3Aen%20&size=' + max_tweets + '&context='; //is%3Averified
 			var pos_score = '';
 			var neg_score = '';
 
-			// sentiment ajax call to php
+			// twitter sentiment ajax call to php
 			$.ajax({
 			    type: "POST",
 			    url: './scripts/get_sent.php',
@@ -122,14 +128,14 @@ function set_header(symbol) {
 						// parse results for scores
 						var score_header = '';
 						if (pos_score == '' && neg_score == '') {
-							score_header = 'No sentiment analysis available for ' + symbol.toUpperCase();
+							score_header = 'No sentiment analysis available for ' + name + '<br><a href="http://twitter.com"><img id="twtr-logo" src="' + twitter_icon_url + '"></img><br>';
 						} else if (pos_score == '' && neg_score != '') {
-							score_header = 'Sentiment Analysis with Twitter<br><a href="http://twitter.com"><img id="twtr-logo" src="https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Twitter_bird_logo_2012.svg/1259px-Twitter_bird_logo_2012.svg.png"></img></a><br>Negative: ' + pos_score + '<br>';
+							score_header = 'Sentiment Analysis with Twitter<br><a href="http://twitter.com"><img id="twtr-logo" src="' + twitter_icon_url + '"></img></a><br>Negative: ' + pos_score + '<br>';
 							// add tweets
 							json_p = JSON.parse(obj.all_neg);
 		    				render_twitter_json(json_p);
 						} else if (neg_score == '' && pos_score != '') {
-							score_header = 'Sentiment Analysis with Twitter<br><a href="http://twitter.com"><img id="twtr-logo" src="https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Twitter_bird_logo_2012.svg/1259px-Twitter_bird_logo_2012.svg.png"></img></a><br>Positive: ' + neg_score + '<br>';
+							score_header = 'Sentiment Analysis with Twitter<br><a href="http://twitter.com"><img id="twtr-logo" src="' + twitter_icon_url + '"></img></a><br>Positive: ' + neg_score + '<br>';
 							// add tweets
 							json_p = JSON.parse(obj.all_pos);
 		    				render_twitter_json(json_p);
@@ -138,9 +144,9 @@ function set_header(symbol) {
 							if ((Number(pos_score) + Number(neg_score)) != 0) {
 								var pos_perc = (Number(pos_score) / (Number(pos_score) + Number(neg_score))) * 100;
 								var neg_perc = (Number(neg_score) / (Number(pos_score) + Number(neg_score))) * 100;
-								score_header = 'Sentiment Analysis with Twitter<br><a href="http://twitter.com"><img id="twtr-logo" src="https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Twitter_bird_logo_2012.svg/1259px-Twitter_bird_logo_2012.svg.png"></img></a><br>Positive: ' + pos_score + ' (' + pos_perc.toFixed(2).toString() + '%),<br>Negative: ' + neg_score + ' (' + neg_perc.toFixed(2).toString() + '%)' + '<br>';
+								score_header = 'Sentiment Analysis with Twitter<br><a href="http://twitter.com"><img id="twtr-logo" src="' + twitter_icon_url + '"></img></a><br>Positive: ' + pos_score + ' (' + pos_perc.toFixed(2).toString() + '%),<br>Negative: ' + neg_score + ' (' + neg_perc.toFixed(2).toString() + '%)' + '<br>';
 							} else {
-								score_header = 'Sentiment Analysis with Twitter<br><a href="http://twitter.com"><img id="twtr-logo" src="https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Twitter_bird_logo_2012.svg/1259px-Twitter_bird_logo_2012.svg.png"></img></a><br>Positive: ' + pos_score + ',<br>' + 'Negative: ' + neg_score + '<br>';
+								score_header = 'Sentiment Analysis with Twitter<br><a href="http://twitter.com"><img id="twtr-logo" src="' + twitter_icon_url + '"></img></a><br>Positive: ' + pos_score + ',<br>' + 'Negative: ' + neg_score + '<br>';
 							}
 							json_p = JSON.parse(obj.all_pos);
 			    			render_twitter_json(json_p);
@@ -157,6 +163,49 @@ function set_header(symbol) {
             		return;
 			    }
 			});
+			// alchemy api call
+			/****** don't look!!! ******/
+			var API_KEY = '025b3aef7aecbe72d5917c58e7b3ddd89ca8fee1';
+			/***************************/
+			var alchemy_url = 'https://access.alchemyapi.com/calls/data/GetNews?apikey=' + API_KEY + '&return=enriched.url.title,enriched.url.url&start=1475280000&end=1478386800&q.enriched.url.enrichedTitle.entities.entity=|text=' + symbol.toUpperCase() + ',type=company|&count=25&outputMode=json'
+			var alchemy_callback = function(data) {
+				//if () {
+				if (!data || !data.result || !data.result.docs || data.result == 'ERROR') {
+				// 	// coudln't get articles
+				// 	document.getElementById("alchemy").innerHTML = 'No news articles available for ' + name + '<br><img id="news-logo" src="http://www.corelinerless.com/images/ico-news.png"></img><br><br>';
+					/* FOR TESTING */
+					// if (true) {
+					var alchemy_string = name + ' In The News<br><img id="news-logo" src="http://www.corelinerless.com/images/ico-news.png"></img><br>';
+					for (var i = 1; i < 6; i++) {
+						url = 'https://www.linkedin.com/in/anish-chadalavada-04236694';
+						title = 'This is the Title for Article #' + i + ' About The Current Status of ' + name;
+						//alert('found url ' + url + ' and title ' + title);
+						// add to final display string if not null
+						alchemy_string = alchemy_string + '<a target="_blank" class="news-article" href="' + url + '">' + title + '</a>';
+					}
+					alchemy_string = alchemy_string + '<br><br>';
+					document.getElementById("alchemy").innerHTML = alchemy_string	
+					/*************/
+				} else {
+					var alchemy_string = name + ' In The News<br><img id="news-logo" src="http://www.corelinerless.com/images/ico-news.png"></img><br>';
+					var url = '';
+					var title = '';
+					// get articles with url
+					for (var i = 0; i < 5; i++) {
+						url = data.result.docs[i].source.enriched.url.url;
+						title = data.result.docs[i].source.enriched.url.title;
+						//alert('found url ' + url + ' and title ' + title);
+						if (url && title) {
+							// add to final display string if not null
+							alchemy_string = alchemy_string + '<a target="_blank" class="news-article" href="' + url + '">' + title + '</a><br>';
+						}
+					}
+					// send it
+					alchemy_string = alchemy_string + '<br><br>';
+					document.getElementById("alchemy").innerHTML = alchemy_string;
+				}
+			}
+			$.getJSON(alchemy_url, alchemy_callback);	//alert(alchemy);
 		}
 		document.getElementById("text-display-header").innerHTML = info_header;
     };
@@ -164,11 +213,9 @@ function set_header(symbol) {
     // get stock data
 	var url = 'http://query.yahooapis.com/v1/public/yql';
 
-	// this is the lovely YQL query (html encoded) which lets us get the stock price:
-	// select * from html where url="http://finance.yahoo.com/q?s=goog" and xpath='//span[@id="yfs_l10_goog"]'
+	// get stock data from yahoo finance
 	var data = 'q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22' + symbol + '%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=';
-	//alert(url + '?' + data);
-	$.getJSON(url, data, callback);
+	$.getJSON(url, data, twitter_callback);	//alert(url + '?' + data);
 }
 
 /* IMPORTANT:
@@ -189,7 +236,9 @@ function get_text(form) {
 	rendered_tweets = [];
 
 	// set timer
-	var timer = Math.floor(Math.random() * ((8500-5000)+1) + 5000);
+	var time_min_milisec = time_min_sec * 1000;
+	var time_max_milisec = time_max_sec * 1000;
+	var timer = Math.floor(Math.random() * ((time_max_milisec - time_min_milisec ) + 1) + time_min_milisec);
 	setTimeout(function() {
 		// not loading anymore
 		document.getElementById("loading-back").style.display = 'none';
@@ -203,7 +252,7 @@ function get_text(form) {
 
 	 	//scroll to bottom of page
 	 	$('html, body').animate({
-        	scrollTop: $("#ask-him").offset().top
+        	scrollTop: $("#stock-sym-display").offset().top
     	}, 1000);
 	}, timer);
 
@@ -214,10 +263,13 @@ function get_text(form) {
 	// get text from user, display stock symbol
 	var user_input = form.inputbox.value;
 	document.getElementById("stock-sym-display").innerHTML = user_input.toUpperCase();
-	document.getElementById("text-display").innerHTML = 'Loading...';
+	// document.getElementById("text-display").innerHTML = 'Loading...';
 	document.getElementById("text-display-header").innerHTML = 'Loading...';
+	document.getElementById("score-header").innerHTML = 'Loading...';
 	document.getElementById("sentiment").innerHTML = 'Loading...';
 	document.getElementById("sentiment").style.display = 'block';
+	document.getElementById("alchemy").innerHTML = 'Loading...';
+	document.getElementById("alchemy").style.display = 'block';
 
 	// change displays
 	document.getElementById("text-input").value = '';
@@ -240,10 +292,12 @@ function get_text(form) {
 	// set header with data
 	set_header(user_input);
 
-	///////////// RETRIEVE RESPONSE FROM WATSON HERE
+	///////////// RETRIEVE RESPONSE FROM WATSON HERE /////////////
 	//var watson_text = 'Hi there! Thanks for using our service. Unfortunately, we don\'t have it up and running yet. Check back soon. - Team Seggy';
-	var watson_text = '<a class="help-msg" onclick="get_help();">Not the results you expected?<br><br></a>Hi there! Thanks for using our service. Check back soon for more updates. - Team Seggy';
-	////////////
+	var watson_text = '<a class="help-msg" onclick="get_help();">Not the results you expected?</a>';
+	overall_score = Math.floor(Math.random() * 10) + 0;
+	document.getElementById("score-header").innerHTML = 'Overall Score: ' + overall_score;
+	//////////////////////////////////////////////////////////////
 
 	document.getElementById("text-display").innerHTML = watson_text;
 	return false;

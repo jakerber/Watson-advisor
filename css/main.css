@@ -1,4 +1,4 @@
-/*=========================================
+x/*=========================================
 *             FULL PAGE STYLES
 *=========================================*/
 
@@ -237,20 +237,68 @@ color: white;
 }
 
 .results-top {
-font-size: 25px;
+font-size: 30px;
+}
+
+#sentiment {
+margin-bottom: 0px; margin-top: 0px;
+padding-bottom: 0px; padding-top: 35px;
 }
 
 #reveal {
-padding-top: 10px;
+padding-top: 25px;
 padding-bottom: 70px;
 height: 100px;
 width: 100px;
 display: none;
 }
 
+#text-display {
+padding-top: 30px;
+border-top: 1px solid rgba(255,255,255,0.35);
+}
+
 .help-msg {
 text-decoration: underline;
 cursor: pointer;
+}
+
+#score-header {
+border-bottom: 1px solid rgba(255,255,255,0.35);
+padding-bottom: 50px;
+margin-bottom: 0px;
+}
+
+/*=========================================
+*                 NEWS
+*=========================================*/
+
+#alchemy {
+padding-top: 35px; padding-bottom: 0px;
+margin-top: 0px; margin-bottom: 0px;
+border-bottom: 1px solid rgba(255,255,255,0.35);
+}
+
+#news-logo {
+padding: 8px;
+height: 60px;
+width: auto;
+padding-bottom: 15px;
+}
+
+.news-article {
+padding: 10px;
+word-wrap: break-word;
+display: block;
+width: 500px;
+border: 2px solid white;
+margin-left: auto; margin-right: auto; margin-top: 0px; margin-bottom: 10px;
+border-radius: 5px;
+text-decoration: none;
+}
+
+.news-article:hover {
+background-color: rgba(255,255,255,0.2);
 }
 
 /*=========================================
@@ -261,11 +309,12 @@ cursor: pointer;
 width: 500px;
 margin-left: auto;
 margin-right: auto;
+padding-bottom: 30px;
 }
 
 #twtr-logo {
-padding: 5px;
-height: 25px;
+padding: 8px;
+height: 60px;
 width: auto;
 }
 
@@ -278,13 +327,13 @@ position: fixed;
 text-align: center;
 font-family: 'Bungee Hairline', 'helvetica neue';
 font-size: 20px;
-line-height: 10px;
+line-height: 0px;
 color: black;
 bottom: 0;
 right: 0;
 left: 0;
 background-color: rgba(255,255,255,0.95);
-padding: 2px;
+padding: 0px;
 }
 
 .footer a {
@@ -348,7 +397,10 @@ min-height: 70px;
 height: 350px;
 }
 #twtr-logo {
-height: 40px;
+height: 75px;
+}
+#news-logo {
+height: 75px;
 }
 /*==========================
 *      BIGGER FONTS
