@@ -117,8 +117,8 @@ function set_header(symbol) {
 			// USERNAME: c368e358-6de7-47f5-92cc-a4b3cffc01b0
 			// PASSWORD: q4vS8yNgAc
 			/***************************/
-			var pos_url = 'https://c368e358-6de7-47f5-92cc-a4b3cffc01b0:q4vS8yNgAc@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + symbol.toUpperCase() + '%20sentiment%3Apositive%20lang%3Aen%20&size=' + max_tweets + '&context=';//is%3Averified
-			var neg_url = 'https://c368e358-6de7-47f5-92cc-a4b3cffc01b0:q4vS8yNgAc@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + symbol.toUpperCase() + '%20sentiment%3Anegative%20lang%3Aen%20&size=' + max_tweets + '&context='; //is%3Averified
+			var pos_url = 'https://c368e358-6de7-47f5-92cc-a4b3cffc01b0:q4vS8yNgAc@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + symbol.toUpperCase() + '%20sentiment%3Apositive%20lang%3Aen%20is%3Averified%20posted%3A2016-10-01&size=' + max_tweets + '&context=';//is%3Averified
+			var neg_url = 'https://c368e358-6de7-47f5-92cc-a4b3cffc01b0:q4vS8yNgAc@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + symbol.toUpperCase() + '%20sentiment%3Anegative%20lang%3Aen%20is%3Averified%20posted%3A2016-10-01&size=' + max_tweets + '&context='; //is%3Averified
 			var pos_score = '';
 			var neg_score = '';
 
@@ -179,9 +179,11 @@ function set_header(symbol) {
 			});
 			// alchemy api call
 			/****** don't look!!! ******/
-			var API_KEY = '025b3aef7aecbe72d5917c58e7b3ddd89ca8fee1';
+			// var API_KEY = '025b3aef7aecbe72d5917c58e7b3ddd89ca8fee1';
+			var API_KEY = '176ef59fcb828eeba09a4115c6b7df723dcdb0c6';
 			/***************************/
-			var alchemy_url = 'https://access.alchemyapi.com/calls/data/GetNews?apikey=' + API_KEY + '&return=enriched.url.title,enriched.url.url&start=1475280000&end=1478386800&q.enriched.url.enrichedTitle.entities.entity=|text=' + symbol.toUpperCase() + ',type=company|&count=25&outputMode=json'
+			var alchemy_url = 'https://access.alchemyapi.com/calls/data/GetNews?apikey=' + API_KEY + '&return=enriched.url.title,enriched.url.url&start=1475280000&end=1478386800&q.enriched.url.enrichedTitle.entities.entity=|text=' + symbol.toUpperCase() + ',type=company|&count=25&outputMode=json';
+//https://access.alchemyapi.com/calls/data/GetNews?apikey=025b3aef7aecbe72d5917c58e7b3ddd89ca8fee1&return=enriched.url.title,enriched.url.url&start=1475280000&end=1478386800&q.enriched.url.enrichedTitle.entities.entity=|text=AMZN,type=company|&count=25&outputMode=json
 			var alchemy_callback = function(data) {
 				//if () {
 				if (!data || !data.result || !data.result.docs || data.result == 'ERROR') {
