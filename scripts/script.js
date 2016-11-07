@@ -84,12 +84,14 @@ function set_header(symbol) {
 
         if (price == null || price == undefined) {
 			// no data found
+			document.getElementById("score-header").style.display = 'none';
         	document.getElementById("sentiment").style.display = 'none';
         	document.getElementById("alchemy").style.display = 'none';
 			info_header = 'Oops! ' + symbol.toUpperCase() + ' is not a valid stock symbol.<br>You can find a full list of ticker symbols online <a href="http://eoddata.com/symbols.aspx" target="_blank">here</a>.<br>';
 		} else {
 			// STOCK IS VALID LET'S GO!!!!
 			// display stock data
+			document.getElementById("score-header").style.display = 'block';
 			if (name == null) {
 				document.getElementById("text-display-header").innerHTML = 'An unexpected error occured<br>Please try again';
 				return;
@@ -121,6 +123,8 @@ function set_header(symbol) {
 			    	if (obj.error == 'error') {
 			    		score_header = 'No sentiment analysis available for ' + symbol.toUpperCase();
 			    	} else {
+						// prepare to display tweets
+						document.getElementById("tweet-container").style.display = 'block';
 			    		var json_p = null;
 			    		pos_score = obj.result_pos;
 						neg_score = obj.result_neg;
@@ -207,7 +211,12 @@ function set_header(symbol) {
 			}
 			$.getJSON(alchemy_url, alchemy_callback);	//alert(alchemy);
 		}
+		// display info
 		document.getElementById("text-display-header").innerHTML = info_header;
+		////////////// RANDOM SCORE ////////////
+		overall_score = Math.floor(Math.random() * 10) + 0;
+		document.getElementById("score-header").innerHTML = 'Overall Score: ' + overall_score;
+		////////////////////////////////////////
     };
 
     // get stock data
@@ -230,6 +239,7 @@ function get_text(form) {
 	document.getElementById("loading-back").style.display = 'block';
 	document.getElementById("nav_bar").style.display = 'none';
 	document.getElementById("foot").style.display = 'none';
+	document.getElementById("tweet-container").style.display = 'none';
 
 	// clear previous tweet displays
 	$(".tweet-div").empty();
@@ -295,8 +305,6 @@ function get_text(form) {
 	///////////// RETRIEVE RESPONSE FROM WATSON HERE /////////////
 	//var watson_text = 'Hi there! Thanks for using our service. Unfortunately, we don\'t have it up and running yet. Check back soon. - Team Seggy';
 	var watson_text = '<a class="help-msg" onclick="get_help();">Not the results you expected?</a>';
-	overall_score = Math.floor(Math.random() * 10) + 0;
-	document.getElementById("score-header").innerHTML = 'Overall Score: ' + overall_score;
 	//////////////////////////////////////////////////////////////
 
 	document.getElementById("text-display").innerHTML = watson_text;
