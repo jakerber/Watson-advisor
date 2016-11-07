@@ -1,3 +1,8 @@
+/*
+FINANCIAL ADVSIOR WATSON
+© 2016 Josh Kerber
+CS89
+*/
 var page_load = false;
 var rendered_tweets = [];
 var help_message = 'Coming soon!';
@@ -304,7 +309,7 @@ function get_text(form) {
 
 	///////////// RETRIEVE RESPONSE FROM WATSON HERE /////////////
 	//var watson_text = 'Hi there! Thanks for using our service. Unfortunately, we don\'t have it up and running yet. Check back soon. - Team Seggy';
-	var watson_text = '<a class="help-msg" onclick="get_help();">Not the results you expected?</a>';
+	var watson_text = '<a class="help-msg" onclick="get_help();">Not the results you were expecting?</a>';
 	//////////////////////////////////////////////////////////////
 
 	document.getElementById("text-display").innerHTML = watson_text;
