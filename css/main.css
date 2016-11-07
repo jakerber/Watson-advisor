@@ -258,15 +258,15 @@ padding-top: 30px;
 border-top: 1px solid rgba(255,255,255,0.35);
 }
 
-.help-msg {
-text-decoration: underline;
-cursor: pointer;
-}
-
-#score-header {
+#text-display-header {
 border-bottom: 1px solid rgba(255,255,255,0.35);
 padding-bottom: 70px;
 margin-bottom: 0px;
+}
+
+.help-msg {
+text-decoration: underline;
+cursor: pointer;
 }
 
 /*=========================================
@@ -286,19 +286,49 @@ width: auto;
 padding-bottom: 13px;
 }
 
-.news-article {
+.news-article-pos {
 padding: 10px;
 word-wrap: break-word;
 display: block;
 width: 500px;
-border: 1px solid white;
+border: 2px solid green;
 margin-left: auto; margin-right: auto; margin-top: 0px; margin-bottom: 10px;
 border-radius: 5px;
 text-decoration: none;
 }
 
-.news-article:hover {
-background-color: rgba(255,255,255,0.2);
+.news-article-neg {
+padding: 10px;
+word-wrap: break-word;
+display: block;
+width: 500px;
+border: 2px solid red;
+margin-left: auto; margin-right: auto; margin-top: 0px; margin-bottom: 10px;
+border-radius: 5px;
+text-decoration: none;
+}
+
+.news-article-nue {
+padding: 10px;
+word-wrap: break-word;
+display: block;
+width: 500px;
+border: 2px solid orange;
+margin-left: auto; margin-right: auto; margin-top: 0px; margin-bottom: 10px;
+border-radius: 5px;
+text-decoration: none;
+}
+
+.news-article-pos:hover {
+background-color: rgba(0,255,0,0.25);
+}
+
+.news-article-neg:hover {
+background-color: rgba(255,0,0,0.35);
+}
+
+.news-article-nue:hover {
+background-color: rgba(255,153,0,0.35);
 }
 
 /*=========================================

@@ -10,7 +10,6 @@ var max_tweets = 500;
 var time_min_sec = 6;
 var time_max_sec = 8;
 var twitter_icon_url = 'http://www.qs-asia.com/main/wp-content/uploads/2016/06/twitter.png';
-var overall_score = -1;
 
 window.onload = function(){
 	window.location = "http://www.cs.dartmouth.edu/~jkerber14/watson/?inputbox=#";
@@ -94,14 +93,12 @@ function set_header(symbol) {
 
         if (price == null || price == undefined) {
 			// no data found
-			document.getElementById("score-header").style.display = 'none';
         	document.getElementById("sentiment").style.display = 'none';
         	document.getElementById("alchemy").style.display = 'none';
 			info_header = 'Oops! ' + symbol.toUpperCase() + ' is not a valid stock symbol.<br>You can find a full list of ticker symbols online <a href="http://eoddata.com/symbols.aspx" target="_blank">here</a>.<br>';
 		} else {
 			// STOCK IS VALID LET'S GO!!!!
 			// display stock data
-			document.getElementById("score-header").style.display = 'block';
 			if (name == null) {
 				document.getElementById("text-display-header").innerHTML = 'An unexpected error occured<br>Please try again';
 				return;
@@ -144,12 +141,12 @@ function set_header(symbol) {
 						if (pos_score == '' && neg_score == '') {
 							score_header = 'No sentiment analysis available for ' + name + '<br><a href="http://twitter.com"><img id="twtr-logo" src="' + twitter_icon_url + '"></img><br>';
 						} else if (pos_score == '' && neg_score != '') {
-							score_header = 'Sentiment Analysis with Twitter<br><a href="http://twitter.com"><img id="twtr-logo" src="' + twitter_icon_url + '"></img></a><br>Negative: ' + pos_score + '<br>';
+							score_header = 'Sentiment Analysis with Twitter<br><a href="http://twitter.com"><img id="twtr-logo" src="' + twitter_icon_url + '"></img></a><br>Negative: ' + pos_score + ' tweets<br>';
 							// add tweets
 							json_p = JSON.parse(obj.all_neg);
 		    				render_twitter_json(json_p);
 						} else if (neg_score == '' && pos_score != '') {
-							score_header = 'Sentiment Analysis with Twitter<br><a href="http://twitter.com"><img id="twtr-logo" src="' + twitter_icon_url + '"></img></a><br>Positive: ' + neg_score + '<br>';
+							score_header = 'Sentiment Analysis with Twitter<br><a href="http://twitter.com"><img id="twtr-logo" src="' + twitter_icon_url + '"></img></a><br>Positive: ' + neg_score + ' tweets<br>';
 							// add tweets
 							json_p = JSON.parse(obj.all_pos);
 		    				render_twitter_json(json_p);
@@ -158,9 +155,9 @@ function set_header(symbol) {
 							if ((Number(pos_score) + Number(neg_score)) != 0) {
 								var pos_perc = (Number(pos_score) / (Number(pos_score) + Number(neg_score))) * 100;
 								var neg_perc = (Number(neg_score) / (Number(pos_score) + Number(neg_score))) * 100;
-								score_header = 'Sentiment Analysis with Twitter<br><a href="http://twitter.com"><img id="twtr-logo" src="' + twitter_icon_url + '"></img></a><br>Positive: ' + pos_score + ' (' + pos_perc.toFixed(2).toString() + '%),<br>Negative: ' + neg_score + ' (' + neg_perc.toFixed(2).toString() + '%)' + '<br>';
+								score_header = 'Sentiment Analysis with Twitter<br><a href="http://twitter.com"><img id="twtr-logo" src="' + twitter_icon_url + '"></img></a><br>' + pos_perc.toFixed(2).toString() + '% Positive,<br>' + neg_perc.toFixed(2).toString() + '% Negative' + '<br>';
 							} else {
-								score_header = 'Sentiment Analysis with Twitter<br><a href="http://twitter.com"><img id="twtr-logo" src="' + twitter_icon_url + '"></img></a><br>Positive: ' + pos_score + ',<br>' + 'Negative: ' + neg_score + '<br>';
+								score_header = 'Sentiment Analysis with Twitter<br><a href="http://twitter.com"><img id="twtr-logo" src="' + twitter_icon_url + '"></img></a><br>Positive: ' + pos_score + ' tweets,<br>' + 'Negative: ' + neg_score + ' tweets<br>';
 							}
 							json_p = JSON.parse(obj.all_pos);
 			    			render_twitter_json(json_p);
@@ -181,8 +178,8 @@ function set_header(symbol) {
 			/****** don't look!!! ******/
 			// var API_KEY = '025b3aef7aecbe72d5917c58e7b3ddd89ca8fee1';
 			var API_KEY = '176ef59fcb828eeba09a4115c6b7df723dcdb0c6';
-			/***************************/
-			var alchemy_url = 'https://access.alchemyapi.com/calls/data/GetNews?apikey=' + API_KEY + '&return=enriched.url.title,enriched.url.url&start=1475280000&end=1478386800&q.enriched.url.enrichedTitle.entities.entity=|text=' + symbol.toUpperCase() + ',type=company|&count=25&outputMode=json';
+			/***************************/															//
+			var alchemy_url = 'https://access.alchemyapi.com/calls/data/GetNews?apikey=' + API_KEY + '&return=enriched.url.title,enriched.url.url,enriched.url.enrichedTitle.docSentiment&start=1476662400&end=1478386800&q.enriched.url.enrichedTitle.entities.entity=|text=' + symbol.toUpperCase() + ',type=company|&q.enriched.url.enrichedTitle.taxonomy.taxonomy_.label=finance&count=25&outputMode=json';
 //https://access.alchemyapi.com/calls/data/GetNews?apikey=025b3aef7aecbe72d5917c58e7b3ddd89ca8fee1&return=enriched.url.title,enriched.url.url&start=1475280000&end=1478386800&q.enriched.url.enrichedTitle.entities.entity=|text=AMZN,type=company|&count=25&outputMode=json
 			var alchemy_callback = function(data) {
 				//if () {
@@ -197,24 +194,39 @@ function set_header(symbol) {
 						title = 'This is the Title for Article #' + i + ' About The Current Status of ' + name;
 						//alert('found url ' + url + ' and title ' + title);
 						// add to final display string if not null
-						alchemy_string = alchemy_string + '<a target="_blank" class="news-article" href="' + url + '">' + title + '</a>';
+						var rand_sent = Math.floor(Math.random() * ((3 - 1) + 1) + 1);
+						if (rand_sent == 1) {
+							alchemy_string = alchemy_string + '<a target="_blank" class="news-article-pos" href="' + url + '">' + title + '</a>';
+						} else if (rand_sent == 2) {
+							alchemy_string = alchemy_string + '<a target="_blank" class="news-article-neg" href="' + url + '">' + title + '</a>';
+						} else {
+							alchemy_string = alchemy_string + '<a target="_blank" class="news-article-nue" href="' + url + '">' + title + '</a>';
+						}
 					}
 					alchemy_string = alchemy_string + '<br><br>';
-					document.getElementById("alchemy").innerHTML = alchemy_string	
+					document.getElementById("alchemy").innerHTML = alchemy_string;
 					/*************/
 				} else {
 					var alchemy_string = name + ' In The News<br><img id="news-logo" src="http://www.corelinerless.com/images/ico-news.png"></img><br>';
 					var url = '';
 					var title = '';
+					var sentiment = '';
 					// get articles with url
 					var loop_max = Math.min(data.result.docs.length, 5);
 					for (var i = 0; i < loop_max; i++) {
 						url = data.result.docs[i].source.enriched.url.url;
 						title = data.result.docs[i].source.enriched.url.title;
+						sentiment = data.result.docs[i].source.enriched.url.enrichedTitle.docSentiment.type;
 						//alert('found url ' + url + ' and title ' + title);
-						if (url && title) {
+						if (url && title && sentiment) {
 							// add to final display string if not null
-							alchemy_string = alchemy_string + '<a target="_blank" class="news-article" href="' + url + '">' + title + '</a>';
+							if (sentiment == 'positive') {
+								alchemy_string = alchemy_string + '<a target="_blank" class="news-article-pos" href="' + url + '">' + title + '</a>';
+							} else if (sentiment == 'negative') {
+								alchemy_string = alchemy_string + '<a target="_blank" class="news-article-neg" href="' + url + '">' + title + '</a>';
+							} else {
+								alchemy_string = alchemy_string + '<a target="_blank" class="news-article-nue" href="' + url + '">' + title + '</a>';
+							}
 						}
 					}
 					// send it
@@ -226,10 +238,6 @@ function set_header(symbol) {
 		}
 		// display info
 		document.getElementById("text-display-header").innerHTML = info_header;
-		////////////// RANDOM SCORE ////////////
-		overall_score = Math.floor(Math.random() * 10) + 0;
-		document.getElementById("score-header").innerHTML = 'Overall Score: ' + overall_score;
-		////////////////////////////////////////
     };
 
     // get stock data
@@ -288,7 +296,6 @@ function get_text(form) {
 	document.getElementById("stock-sym-display").innerHTML = user_input.toUpperCase();
 	// document.getElementById("text-display").innerHTML = 'Loading...';
 	document.getElementById("text-display-header").innerHTML = 'Loading...';
-	document.getElementById("score-header").innerHTML = 'Loading...';
 	document.getElementById("sentiment").innerHTML = 'Loading...';
 	document.getElementById("sentiment").style.display = 'block';
 	document.getElementById("alchemy").innerHTML = 'Loading...';
