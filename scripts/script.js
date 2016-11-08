@@ -189,7 +189,7 @@ function set_header(symbol) {
 					/* FOR TESTING */
 					// if (true) {
 					var alchemy_string = name + ' In The News<br><img id="news-logo" src="http://www.corelinerless.com/images/ico-news.png"></img><br>';
-					for (var i = 1; i < 6; i++) {
+					for (var i = 1; i < 7; i++) {
 						url = 'https://www.linkedin.com/in/anish-chadalavada-04236694';
 						title = 'This is the Title for Article #' + i + ' About The Current Status of ' + name;
 						//alert('found url ' + url + ' and title ' + title);
