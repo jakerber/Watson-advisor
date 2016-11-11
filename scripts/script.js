@@ -5,7 +5,8 @@ CS89
 */
 var page_load = false;
 var rendered_tweets = [];
-var help_message = 'Hi! Thank you for using our service.\n\nWith our Market Sentiment Synthesizer, you can utilize IBM\'s Watson to gather information on stocks you want to learn more about. We\'ll provide you with relavent articles and tweets that will show you what people are thinking. We\'ll also provide you with a sentiment analysis of the data, so you can see if people are exicted or upset with the stock in today\'s market. Articles with a positive sentiment will be highlighted green, negative sentiment red, and nuetral orange. All you have to do is enter the stock\'s ticker symbol!\n\nWe are currently using a free trial of Watson which occasionally goes over its daily API call limit. We apologize in advance if this happens to you.\n\nAre no articles or tweets being displayed? This is because not enough people are talking about the stock. To ensure relavent data is being presented, information is only presented if we feel it relates to the stock provided.\n\nStill have questions? Don\'t hesistate to email anish.chadalavada.18@dartmouth.edu if you need help!\n\n- MSS Team';
+var help_message = 'Hi! Thank you for using our service.\n\nWith our Market Sentiment Synthesizer, you can utilize IBM\'s Watson to gather information on stocks you want to learn more about. We\'ll provide you with relavent articles and tweets that will show you what people are thinking. We\'ll also provide you with a sentiment analysis of the data, so you can see if people are exicted or upset with the stock in today\'s market. Articles with a positive sentiment will be highlighted green, negative sentiment red, and nuetral orange. All you have to do is enter the stock\'s ticker symbol!\n\nStill have questions? Don\'t hesistate to email anish.chadalavada.18@dartmouth.edu if you need help.\n\n- MSS Team';
+var results_message = 'We are currently using a free trial of Watson which occasionally goes over its daily API call limit. We apologize in advance if this happens to you.\n\nAre no articles or tweets being displayed? This is because not enough people are talking about the stock. To ensure relavent data is being presented, information is only presented if we feel it relates to the stock provided.\n\nStill have questions? Don\'t hesistate to email anish.chadalavada.18@dartmouth.edu if you need help.\n\n- MSS Team';
 var max_tweets = 500;
 var time_min_sec = 6;
 var time_max_sec = 8;
@@ -16,6 +17,11 @@ window.onload = function(){
 }
 
 function get_help() {
+	alert(results_message);
+	return false;
+}
+
+function info_help() {
 	alert(help_message);
 	return false;
 }
