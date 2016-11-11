@@ -5,7 +5,7 @@ CS89
 */
 var page_load = false;
 var rendered_tweets = [];
-var help_message = 'Coming soon!';
+var help_message = 'Hi! Thank you for using our service.\n\nWith our Market Sentiment Synthesizer, you can utilize IBM\'s Watson to gather information on stocks you want to learn more about. We\'ll provide you with relavent articles and tweets that will show you what people are thinking. We\'ll also provide you with a sentiment analysis of the data, so you can see if people are exicted or upset with the stock in today\'s market. Articles with a positive sentiment will be highlighted green, negative sentiment red, and nuetral orange. All you have to do is enter the stock\'s ticker symbol!\n\nWe are currently using a free trial of Watson which occasionally goes over its daily API call limit. We apologize in advance if this happens to you.\n\nAre no articles or tweets being displayed? This is because not enough people are talking about the stock. To ensure relavent data is being presented, information is only presented if we feel it relates to the stock provided.\n\nStill have questions? Don\'t hesistate to email anish.chadalavada.18@dartmouth.edu if you need help!\n\n- MSS Team';
 var max_tweets = 500;
 var time_min_sec = 6;
 var time_max_sec = 8;
@@ -114,8 +114,8 @@ function set_header(symbol) {
 			// USERNAME: c368e358-6de7-47f5-92cc-a4b3cffc01b0
 			// PASSWORD: q4vS8yNgAc
 			/***************************/
-			var pos_url = 'https://c368e358-6de7-47f5-92cc-a4b3cffc01b0:q4vS8yNgAc@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + symbol.toUpperCase() + '%20sentiment%3Apositive%20lang%3Aen%20is%3Averified%20posted%3A2016-10-01&size=' + max_tweets + '&context=';//is%3Averified
-			var neg_url = 'https://c368e358-6de7-47f5-92cc-a4b3cffc01b0:q4vS8yNgAc@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + symbol.toUpperCase() + '%20sentiment%3Anegative%20lang%3Aen%20is%3Averified%20posted%3A2016-10-01&size=' + max_tweets + '&context='; //is%3Averified
+			var pos_url = 'https://c368e358-6de7-47f5-92cc-a4b3cffc01b0:q4vS8yNgAc@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + symbol.toUpperCase() + '%20sentiment%3Apositive%20lang%3Aen%20is%3Averified%20posted%3A2016-10-20&size=' + max_tweets + '&context=';//is%3Averified
+			var neg_url = 'https://c368e358-6de7-47f5-92cc-a4b3cffc01b0:q4vS8yNgAc@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + symbol.toUpperCase() + '%20sentiment%3Anegative%20lang%3Aen%20is%3Averified%20posted%3A2016-10-20&size=' + max_tweets + '&context='; //is%3Averified
 			var pos_score = '';
 			var neg_score = '';
 
@@ -176,36 +176,19 @@ function set_header(symbol) {
 			});
 			// alchemy api call
 			/****** don't look!!! ******/
-			// var API_KEY = '025b3aef7aecbe72d5917c58e7b3ddd89ca8fee1';
-			var API_KEY = '176ef59fcb828eeba09a4115c6b7df723dcdb0c6';
+			var API_KEY_ARRAY = [];
+			API_KEY_ARRAY.push('025b3aef7aecbe72d5917c58e7b3ddd89ca8fee1');
+			API_KEY_ARRAY.push('176ef59fcb828eeba09a4115c6b7df723dcdb0c6');
+			API_KEY_ARRAY.push('21bb6af45b7e95a6d576264950e6ed3ec0f65c1f');
+			var API_KEY = API_KEY_ARRAY[Math.floor(Math.random() * ((2 - 0) + 1) + 0)];
 			/***************************/															//
 			var alchemy_url = 'https://access.alchemyapi.com/calls/data/GetNews?apikey=' + API_KEY + '&return=enriched.url.title,enriched.url.url,enriched.url.enrichedTitle.docSentiment&start=1476662400&end=1478386800&q.enriched.url.enrichedTitle.entities.entity=|text=' + symbol.toUpperCase() + ',type=company|&q.enriched.url.enrichedTitle.taxonomy.taxonomy_.label=finance&count=25&outputMode=json';
 //https://access.alchemyapi.com/calls/data/GetNews?apikey=025b3aef7aecbe72d5917c58e7b3ddd89ca8fee1&return=enriched.url.title,enriched.url.url&start=1475280000&end=1478386800&q.enriched.url.enrichedTitle.entities.entity=|text=AMZN,type=company|&count=25&outputMode=json
 			var alchemy_callback = function(data) {
-				//if () {
 				if (!data || !data.result || !data.result.docs || data.result == 'ERROR') {
 				// 	// coudln't get articles
-				// 	document.getElementById("alchemy").innerHTML = 'No news articles available for ' + name + '<br><img id="news-logo" src="http://www.corelinerless.com/images/ico-news.png"></img><br><br>';
-					/* FOR TESTING */
-					// if (true) {
-					var alchemy_string = name + ' In The News<br><img id="news-logo" src="http://www.corelinerless.com/images/ico-news.png"></img><br>';
-					for (var i = 1; i < 7; i++) {
-						url = 'https://www.linkedin.com/in/anish-chadalavada-04236694';
-						title = 'This is the Title for Article #' + i + ' About The Current Status of ' + name;
-						//alert('found url ' + url + ' and title ' + title);
-						// add to final display string if not null
-						var rand_sent = Math.floor(Math.random() * ((3 - 1) + 1) + 1);
-						if (rand_sent == 1) {
-							alchemy_string = alchemy_string + '<a target="_blank" class="news-article-pos" href="' + url + '">' + title + '</a>';
-						} else if (rand_sent == 2) {
-							alchemy_string = alchemy_string + '<a target="_blank" class="news-article-neg" href="' + url + '">' + title + '</a>';
-						} else {
-							alchemy_string = alchemy_string + '<a target="_blank" class="news-article-nue" href="' + url + '">' + title + '</a>';
-						}
-					}
-					alchemy_string = alchemy_string + '<br><br>';
-					document.getElementById("alchemy").innerHTML = alchemy_string;
-					/*************/
+					var no_news_msg = 'Watson cannot retrieve news articles at this time. We apologize for this inconvenience. Please try again in a few moments.';
+					document.getElementById("alchemy").innerHTML = name + ' In The News<br><img id="news-logo" src="http://www.corelinerless.com/images/ico-news.png"></img><br><p>' + no_news_msg + '</p>';
 				} else {
 					var alchemy_string = name + ' In The News<br><img id="news-logo" src="http://www.corelinerless.com/images/ico-news.png"></img><br>';
 					var url = '';
@@ -261,6 +244,7 @@ function get_text(form) {
 	document.getElementById("nav_bar").style.display = 'none';
 	document.getElementById("foot").style.display = 'none';
 	document.getElementById("tweet-container").style.display = 'none';
+	document.getElementById("title-main").innerHTML = 'Market Sentiment Synthesizer';
 
 	// clear previous tweet displays
 	$(".tweet-div").empty();
