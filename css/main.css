@@ -403,6 +403,13 @@ font-size: 30px;
 #nav_bar {
 margin-bottom: 10%;
 }
+#title-main {
+font-size: 34px;
+}
+#watson-gif {
+height: 185px;
+width: 185px;
+}
 /*==========================
 *      TALLER OVERLAY
 *===========================*/
@@ -416,7 +423,7 @@ font-size: 50px;
 font-family: 'Futura';
 }
 .overlay h1 {
-padding-top: 75px;
+padding-top: 0px;
 font-size: 100px;
 font-weight: 500;
 }
