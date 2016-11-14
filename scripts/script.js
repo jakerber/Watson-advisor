@@ -120,8 +120,8 @@ function set_header(symbol) {
 			// USERNAME: c368e358-6de7-47f5-92cc-a4b3cffc01b0
 			// PASSWORD: q4vS8yNgAc
 			/***************************/
-			var pos_url = 'https://c368e358-6de7-47f5-92cc-a4b3cffc01b0:q4vS8yNgAc@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + symbol.toUpperCase() + '%20sentiment%3Apositive%20lang%3Aen%20is%3Averified%20posted%3A2016-10-20&size=' + max_tweets + '&context=';//is%3Averified
-			var neg_url = 'https://c368e358-6de7-47f5-92cc-a4b3cffc01b0:q4vS8yNgAc@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + symbol.toUpperCase() + '%20sentiment%3Anegative%20lang%3Aen%20is%3Averified%20posted%3A2016-10-20&size=' + max_tweets + '&context='; //is%3Averified
+			var pos_url = 'https://c368e358-6de7-47f5-92cc-a4b3cffc01b0:q4vS8yNgAc@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + symbol.toUpperCase() + '%20sentiment%3Apositive%20lang%3Aen%20is%3Averified%20posted%3A2016-10-25&size=' + max_tweets + '&context=';//is%3Averified
+			var neg_url = 'https://c368e358-6de7-47f5-92cc-a4b3cffc01b0:q4vS8yNgAc@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + symbol.toUpperCase() + '%20sentiment%3Anegative%20lang%3Aen%20is%3Averified%20posted%3A2016-10-25&size=' + max_tweets + '&context='; //is%3Averified
 			var pos_score = '';
 			var neg_score = '';
 
