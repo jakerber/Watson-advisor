@@ -5,8 +5,8 @@ CS89
 */
 var page_load = false;
 var rendered_tweets = [];
-var help_message = 'Hi there! Thank you for using our service.\n\nWith our Market Sentiment Synthesizer, you can utilize IBM\'s Watson to gather information on stocks you want to learn more about. We\'ll provide you with relavent articles and tweets that will show you what people are thinking. We\'ll also provide you with a sentiment analysis of the data, so you can see if people are exicted or upset with the stock in today\'s market. Articles with a positive sentiment will be highlighted green, negative sentiment red, and neutral orange. All you have to do is enter the stock\'s ticker symbol!\n\nStill have questions? Don\'t hesistate to email anish.chadalavada.18@dartmouth.edu if you need help.\n\n- MSS Team';
-var results_message = 'We are currently using a free trial of Watson which occasionally goes over its daily API call limit. We apologize in advance if this happens to you.\n\nAre no articles or tweets being displayed? This is because not enough people are talking about the stock. To ensure relavent data is being presented, information is only shown if we feel it relates to the stock provided.\n\nStill have questions? Don\'t hesistate to email anish.chadalavada.18@dartmouth.edu if you need help.\n\n- MSS Team';
+var help_message = 'Hi there! Thank you for using our service.\n\nWith our Market Sentiment Synthesizer, you can utilize IBM\'s Watson to gather information on stocks you want to learn more about. We\'ll provide you with relevant articles and tweets that will show you what people are thinking. We\'ll also provide you with a sentiment analysis of the data, so you can see if people are exicted or upset with the stock in today\'s market. Articles with a positive sentiment will be highlighted green, negative sentiment red, and neutral orange. All you have to do is enter the stock\'s ticker symbol!\n\nStill have questions? Don\'t hesistate to email anish.chadalavada.18@dartmouth.edu if you need help.\n\n- MSS Team';
+var results_message = 'We are currently using a free trial of Watson which occasionally goes over its daily API call limit. We apologize in advance if this happens to you.\n\nAre no articles or tweets being displayed? This is because not enough people are talking about the stock. To ensure relevant data is being presented, information is only shown if we feel it relates to the stock provided.\n\nStill have questions? Don\'t hesistate to email anish.chadalavada.18@dartmouth.edu if you need help.\n\n- MSS Team';
 var max_tweets = 500;
 var time_min_sec = 6;
 var time_max_sec = 8;
@@ -187,10 +187,13 @@ function set_header(symbol) {
 			var alchemy_url = 'https://access.alchemyapi.com/calls/data/GetNews?apikey=' + API_KEY + '&return=enriched.url.title,enriched.url.url,enriched.url.enrichedTitle.docSentiment&start=1476662400&end=1478386800&q.enriched.url.enrichedTitle.entities.entity=|text=' + symbol.toUpperCase() + ',type=company|&q.enriched.url.enrichedTitle.taxonomy.taxonomy_.label=finance&count=25&outputMode=json';
 //https://access.alchemyapi.com/calls/data/GetNews?apikey=025b3aef7aecbe72d5917c58e7b3ddd89ca8fee1&return=enriched.url.title,enriched.url.url&start=1475280000&end=1478386800&q.enriched.url.enrichedTitle.entities.entity=|text=AMZN,type=company|&count=25&outputMode=json
 			var alchemy_callback = function(data) {
-				if (!data || !data.result || !data.result.docs || data.result == 'ERROR') {
+				if (!data || !data.result || data.result == 'ERROR') {
 				// 	// coudln't get articles
 					var no_news_msg = 'Watson cannot retrieve news articles at this time. We apologize for this inconvenience. Please try again in a few moments.';
 					document.getElementById("alchemy").innerHTML = name + ' In The News<br><img id="news-logo" src="http://www.corelinerless.com/images/ico-news.png"></img><br><p>' + no_news_msg + '</p>';
+				} else if (!data.result.docs) {
+					var no_res_msg = 'No relevant news artcle were found for this company.';
+					document.getElementById("alchemy").innerHTML = name + ' In The News<br><img id="news-logo" src="http://www.corelinerless.com/images/ico-news.png"></img><br><p>' + no_res_msg + '</p>';
 				} else {
 					var alchemy_string = name + ' In The News<br><img id="news-logo" src="http://www.corelinerless.com/images/ico-news.png"></img><br>';
 					var url = '';
