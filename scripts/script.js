@@ -182,7 +182,7 @@ function set_header(symbol) {
 			});
 			// alchemy api call
 			/****** don't look!!! ******/
-			var API_KEY = '8614fa1fecdff87a214d23dbe6f9d517204a1225';
+			var API_KEY = 'b4ebe040c3abb168c986cc808766ae26d00998ee';
 			/***************************/															//
 			var alchemy_url = 'https://access.alchemyapi.com/calls/data/GetNews?apikey=' + API_KEY + '&return=enriched.url.title,enriched.url.url,enriched.url.enrichedTitle.docSentiment&start=1476662400&end=1478386800&q.enriched.url.enrichedTitle.entities.entity=|text=' + symbol.toUpperCase() + ',type=company|&q.enriched.url.enrichedTitle.taxonomy.taxonomy_.label=finance&count=25&outputMode=json';
 //https://access.alchemyapi.com/calls/data/GetNews?apikey=025b3aef7aecbe72d5917c58e7b3ddd89ca8fee1&return=enriched.url.title,enriched.url.url&start=1475280000&end=1478386800&q.enriched.url.enrichedTitle.entities.entity=|text=AMZN,type=company|&count=25&outputMode=json
